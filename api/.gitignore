@@ -22,8 +22,9 @@ _UpgradeReport_Files/
 ###############
 # Directories #
 ###############
-bin/
-obj/
+bin
+out
+obj
 TestResults/
 ###################
 # Web publish log #

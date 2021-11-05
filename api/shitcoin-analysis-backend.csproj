@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>aspnet-shitcoin_analysis_backend-F7569B01-BC02-4A1A-9502-0D45513A2FD3</UserSecretsId>
+    <UserSecretsId>aspnet-shitcoin_analysis_backend-DB95BAF0-A548-4A8C-9E34-EB7DA315E7B0</UserSecretsId>
     <RootNamespace>shitcoin_analysis_backend</RootNamespace>
   </PropertyGroup>
 

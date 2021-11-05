@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: api
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    expose:
+      - 5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./api:/app
