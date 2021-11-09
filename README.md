@@ -16,6 +16,11 @@ docker-compose up -d
 ### Run with local envirnoment
 You need to setup you local envirnoment by [installing .NET](https://dotnet.microsoft.com/download)
 
+Run bellow command to restore the packages:
+```bash
+dotnet restore # must be run in /api directory
+```
+
 Start the app by running:
 ```shell
 dotnet run 
