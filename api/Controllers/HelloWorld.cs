@@ -22,7 +22,7 @@ namespace shitcoin_analysis_backend.Controllers
         [HttpGet]
         public String Get()
         {
-            return "Hello World!";
+            return "Hello!";
         }
     }
 }
