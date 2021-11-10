@@ -1,8 +1,9 @@
 version: '3.8'
 
 services:
-  api:
-    container_name: gateway
+  gateway:
+    image: gateway:dev
+    container_name: gateway-dev
     build:
       context: gateway
       dockerfile: ./Dockerfile
@@ -12,3 +13,15 @@ services:
       - "5000:5000"
     volumes:
       - ./gateway:/app
+  analytics:
+    image: analytics:prod
+    container_name: analytics-dev
+    build:
+      context: analytics
+      dockerfile: ./Dockerfile
+    expose:
+      - 5001
+    ports:
+      - "5001:3000"
+    volumes:
+      - ./analytics:/app
