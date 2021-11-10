@@ -25,3 +25,22 @@ services:
       - "5001:3000"
     volumes:
       - ./analytics:/app
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=${DB_USERNAME}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_PORT=${DB_PORT}
+      - DB_HOST=database
+  database:
+    platform: linux/amd64
+    image: mcr.microsoft.com/azure-sql-edge # TODO: fix image not supported on arm64 arch
+    container_name: database-dev
+    volumes:
+      - mysql-data:/data/db
+    environment:
+      - SA_PASSWORD=${DB_PASSWORD}
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
+
+volumes:
+  mysql-data:
