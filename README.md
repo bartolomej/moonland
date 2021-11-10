@@ -18,7 +18,7 @@ You need to setup you local envirnoment by [installing .NET](https://dotnet.micr
 
 Run bellow command to restore the packages:
 ```bash
-dotnet restore # must be run in /api directory
+dotnet restore # must be run in /gateway directory
 ```
 
 Start the app by running:

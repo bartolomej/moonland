@@ -2,13 +2,13 @@ version: '3.8'
 
 services:
   api:
-    container_name: api
+    container_name: gateway
     build:
-      context: ./api
+      context: gateway
       dockerfile: ./Dockerfile
     expose:
       - 5000
     ports:
       - "5000:5000"
     volumes:
-      - ./api:/app
+      - ./gateway:/app
