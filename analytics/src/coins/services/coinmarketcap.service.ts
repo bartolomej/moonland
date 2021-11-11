@@ -33,7 +33,7 @@ type CoinCommonInfo = {
   slug: string;
 };
 
-type CoinInfo = CoinCommonInfo & {
+export type CoinInfo = CoinCommonInfo & {
   rank: number;
   is_active: number;
   first_historical_data: string;
@@ -41,7 +41,7 @@ type CoinInfo = CoinCommonInfo & {
   platform: CoinPlatformInfo;
 };
 
-type CoinMetadata = CoinCommonInfo & {
+export type CoinMetadata = CoinCommonInfo & {
   logo: string;
   description: string;
   date_added: string;
@@ -64,7 +64,7 @@ type CoinMetadata = CoinCommonInfo & {
   };
 };
 
-type CoinPairData = {
+export type CoinPairData = {
   price: number;
   volume_24h: number;
   volume_change_24h: number;
@@ -90,6 +90,11 @@ type CoinListingData = CoinCommonInfo & {
   quote: { [symbol: string]: CoinPairData };
 };
 
+type MetadataMap = { [slug: string]: CoinMetadata };
+type MetadataResponse = CoinmarketcapRes<MetadataMap>;
+type LatestListingResponse = CoinmarketcapRes<CoinListingData[]>;
+type InfoResponse = CoinmarketcapRes<CoinInfo[]>;
+
 @Injectable()
 export class CoinmarketcapGatewayService {
   private readonly apiKey: string;
@@ -99,31 +104,51 @@ export class CoinmarketcapGatewayService {
 
   private fetch<T>(endpoint: string, params?: any) {
     const url = 'https://pro-api.coinmarketcap.com' + endpoint;
-    return axios.get<T>(url, {
-      headers: {
-        'X-CMC_PRO_API_KEY': this.apiKey,
-      },
-      params,
-    });
+    console.log('CoinMarketCap fetching: ', url);
+    return axios
+      .get<T>(url, {
+        headers: {
+          'X-CMC_PRO_API_KEY': this.apiKey,
+        },
+        params,
+      })
+      .catch((e) => {
+        console.log('CoinMarketCap error: ', e);
+        throw e;
+      });
   }
 
-  async fetchCryptocurrencyMap() {
-    const { data } = await this.fetch<CoinmarketcapRes<CoinInfo[]>>(
+  async fetchBasicInfo() {
+    const { data: axiosData } = await this.fetch<InfoResponse>(
       '/v1/cryptocurrency/map',
     );
-    return data;
+    return axiosData.data;
   }
 
-  async fetchCryptocurrencyInfo(coinIds: number[]) {
-    return this.fetch<CoinmarketcapRes<{ [slug: string]: CoinMetadata }>>(
+  async fetchInfoInBatch(coinIds: number[]) {
+    const requests = [];
+    while (coinIds.length > 0) {
+      requests.push(this.fetchInfo(coinIds.splice(0, 1000)));
+    }
+    const responses = await Promise.all<MetadataMap>(requests);
+    return responses.reduce<MetadataMap>(
+      (prev, curr) => ({ ...prev, ...curr }),
+      {},
+    );
+  }
+
+  async fetchInfo(coinIds: number[]) {
+    const { data: axiosData } = await this.fetch<MetadataResponse>(
       '/v1/cryptocurrency/info',
       { id: coinIds.join(',') },
     );
+    return axiosData.data;
   }
 
-  async fetchCryptocurrencyLatestListing() {
-    return this.fetch<CoinmarketcapRes<CoinListingData[]>>(
+  async fetchLatestListing() {
+    const { data: axiosData } = await this.fetch<LatestListingResponse>(
       '/v1/cryptocurrency/listing/latest',
     );
+    return axiosData.data;
   }
 }
