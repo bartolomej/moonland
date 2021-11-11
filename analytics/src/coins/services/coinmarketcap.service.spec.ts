@@ -17,4 +17,10 @@ describe('CoinsService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should return a 200 OK response', async () => {
+    const { data, status } = await service.fetchCryptocurrencyInfo([1, 2]);
+    expect(status).toBe(200);
+    expect(Object.keys(data.data).length).toBe(2);
+  });
 });
