@@ -14,7 +14,7 @@ services:
     volumes:
       - ./gateway:/app
   analytics:
-    image: analytics:prod
+    image: analytics:dev
     container_name: analytics-dev
     build:
       context: analytics
