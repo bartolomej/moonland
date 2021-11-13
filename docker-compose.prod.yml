@@ -7,17 +7,9 @@ services:
     build:
       context: gateway
       dockerfile: ./Dockerfile.prod
-    expose:
-      - 5000
-    ports:
-      - "5000:5000"
   analytics:
     image: analytics:prod
     container_name: analytics-prod
     build:
       context: analytics
       dockerfile: ./Dockerfile.prod
-    expose:
-      - 5001
-    ports:
-      - "5001:3000"

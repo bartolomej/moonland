@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Post } from '@nestjs/common';
 import { CoinsService } from './services/coins.service';
 import { CoinAggregationService } from './services/aggregation.service';
+import { ApiParam } from '@nestjs/swagger';
 
 @Controller('coins')
 export class CoinsController {
@@ -15,6 +16,7 @@ export class CoinsController {
   }
 
   @Get(':id')
+  @ApiParam({ name: 'id', description: 'Crypto coin ID.', example: 'DOGE' })
   findOne(@Param('id') id: string) {
     return this.coinsService.findOne(id);
   }

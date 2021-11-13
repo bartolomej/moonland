@@ -5,29 +5,32 @@ Crypto ecosystem is evolving rapidly. There is a bunch of serious projects looki
 ## Get started
 
 ### Run with docker
-You need to install Docker & docker-compose in order to run this app with Docker. 
+1. You need to install Docker & docker-compose in order to run this app with Docker. 
 See: [Docker installation instructions](https://www.docker.com/get-started)
 
-Once you have installed and setup docker, run:
-```shell
-docker-compose up -d
-```
+2. Add environment variables
+Create `.env` file in project root, with environment variables defined in `.env.example`
 
-### Run with local envirnoment
-You need to setup you local envirnoment by [installing .NET](https://dotnet.microsoft.com/download)
+3. Once you have installed and setup docker, run:
+    ```shell
+    docker-compose up -d
+    ```
 
-Run bellow command to restore the packages:
-```bash
-dotnet restore # must be run in /gateway directory
-```
+### Run gateway app locally
+1. You need to set up you local environment by [installing .NET](https://dotnet.microsoft.com/download)
 
-Start the app by running:
-```shell
-dotnet run 
-```
-... or use the `watch` command to automatically rerun the app when source files change:
-```shell
-dotnet watch run
-```
+2. Run bellow command to restore the packages:
+    ```bash
+    dotnet restore # must be run in /gateway directory
+    ```
+   
+3. Start the app by running:
+    ```shell
+    dotnet run 
+    ```
+    ... or use the `watch` command to automatically rerun the app when source files change:
+    ```shell
+    dotnet watch run
+    ```
 
 You can also check [Tutorial: Create a web API with ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-5.0&tabs=visual-studio-code)
