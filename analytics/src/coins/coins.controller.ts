@@ -28,7 +28,7 @@ export class CoinsController {
     return this.coinsService.findOne(id);
   }
 
-  @Post()
+  @Post('aggregate')
   @ApiQuery({
     name: 'l',
     description: 'Limit the number of returned coins',

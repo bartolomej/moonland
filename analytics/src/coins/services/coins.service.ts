@@ -6,12 +6,12 @@ export class CoinsService {
   // TODO: replace mock in-memory storage with persistent db
   private storage: { [id: string]: Coin } = {};
 
-  findAll() {
+  async findAll() {
     const ids = Object.keys(this.storage);
     return ids.map((id) => this.storage[id]);
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     const coin = this.storage[id];
     if (!coin) {
       throw new NotFoundException('Coin not found');
@@ -19,7 +19,7 @@ export class CoinsService {
     return coin;
   }
 
-  async update(coin: Coin) {
+  async upsert(coin: Coin) {
     this.storage[coin.id] = coin;
     return coin;
   }

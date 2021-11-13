@@ -37,7 +37,7 @@ export class CoinAggregationService {
       });
     });
     return await Promise.all(
-      coins.map((coin) => this.coinService.update(coin)),
+      coins.map((coin) => this.coinService.upsert(coin)),
     );
   }
 }
