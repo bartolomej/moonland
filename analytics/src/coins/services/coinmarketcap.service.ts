@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { coinMarketCap } from '../../config';
 import axios from 'axios';
 
@@ -97,14 +97,16 @@ type InfoResponse = CoinmarketcapRes<CoinInfo[]>;
 
 @Injectable()
 export class CoinmarketcapGatewayService {
+  private readonly logger = new Logger(CoinmarketcapGatewayService.name);
   private readonly apiKey: string;
+
   constructor() {
     this.apiKey = coinMarketCap.apiKey;
   }
 
   private fetch<T>(endpoint: string, params?: any) {
     const url = 'https://pro-api.coinmarketcap.com' + endpoint;
-    console.log('CoinMarketCap fetching: ', url);
+    this.logger.debug(`fetching: ${url}`);
     return axios
       .get<T>(url, {
         headers: {
@@ -113,7 +115,7 @@ export class CoinmarketcapGatewayService {
         params,
       })
       .catch((e) => {
-        console.log('CoinMarketCap error: ', e);
+        this.logger.error(`fetch error: ${e.message}`, e.stack);
         throw e;
       });
   }

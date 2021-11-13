@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CoinmarketcapGatewayService } from './coinmarketcap.service';
 import { plainToClass } from 'class-transformer';
 import { Coin } from '../entities/coin.entity';
@@ -6,17 +6,20 @@ import { CoinsService } from './coins.service';
 
 @Injectable()
 export class CoinAggregationService {
+  private readonly logger = new Logger(CoinAggregationService.name);
+
   constructor(
     private readonly cmcService: CoinmarketcapGatewayService,
     private readonly coinService: CoinsService,
   ) {}
 
   // TODO: remove limit later on
-  async refetchCoinData(limit = 10) {
+  async refetchCoinData(limit?: number) {
     let cmcCoins = await this.cmcService.fetchBasicInfo();
     if (limit) {
       cmcCoins = cmcCoins.splice(0, limit);
     }
+    this.logger.debug(`Aggregating data for ${cmcCoins.length} coins`);
     const cmcMetadataMap = await this.cmcService.fetchInfoInBatch(
       cmcCoins.map((coin) => coin.id),
     );
