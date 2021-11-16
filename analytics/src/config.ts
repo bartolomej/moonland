@@ -37,4 +37,5 @@ export const typeorm: TypeOrmModuleOptions = {
   entities: [],
   synchronize: true, // disable in stable production environment
   autoLoadEntities: true,
+  charset: 'utf8mb4', // use 4 bytes per character encoding (to support emojis)
 };

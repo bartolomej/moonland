@@ -6,13 +6,10 @@ export class SocialPost {
   @PrimaryColumn()
   id: string;
 
-  @Column()
-  socialId: string;
-
   @Column({ type: 'text' })
   text: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'bigint' })
   timestamp: number;
 
   @ManyToOne(() => SocialUser, (user) => user.posts)

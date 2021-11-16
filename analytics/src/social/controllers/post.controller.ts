@@ -1,9 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { PostService } from '../services/post.service';
+import { SocialPostService } from '../services/post.service';
 
-@Controller('social/post')
-export class PostController {
-  constructor(private readonly socialPostService: PostService) {}
+@Controller('social/posts')
+export class SocialPostController {
+  constructor(private readonly socialPostService: SocialPostService) {}
 
   @Get()
   findAll() {

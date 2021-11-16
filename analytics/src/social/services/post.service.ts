@@ -1,25 +1,29 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { SocialPost } from '../entities/post.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { handleTypeormError } from '../../errors';
 
 @Injectable()
-export class PostService {
-  private storage: { [id: string]: SocialPost } = {};
+export class SocialPostService {
+  constructor(
+    @InjectRepository(SocialPost)
+    private readonly repository: Repository<SocialPost>,
+  ) {}
 
-  save(mention: SocialPost) {
-    this.storage[mention.id] = mention;
-    return mention;
+  save(post: SocialPost) {
+    return this.repository.save(post).catch(handleTypeormError);
   }
 
   findAll() {
-    const ids = Object.keys(this.storage);
-    return ids.map((id) => this.storage[id]);
+    return this.repository.find();
   }
 
   findOne(id: string) {
-    const mention = this.storage[id];
-    if (!mention) {
-      throw new NotFoundException('Social mention not found');
+    const post = this.repository.findOne(id);
+    if (!post) {
+      throw new NotFoundException('Social post not found');
     }
-    return mention;
+    return post;
   }
 }
