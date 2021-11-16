@@ -1,18 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Coin } from '../entities/coin.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class CoinsService {
-  // TODO: replace mock in-memory storage with persistent db
-  private storage: { [id: string]: Coin } = {};
+  constructor(
+    @InjectRepository(Coin)
+    private readonly coinRepository: Repository<Coin>,
+  ) {}
 
   async findAll() {
-    const ids = Object.keys(this.storage);
-    return ids.map((id) => this.storage[id]);
+    return this.coinRepository.find();
   }
 
   async findOne(id: string) {
-    const coin = this.storage[id];
+    const coin = this.coinRepository.findOne(id);
     if (!coin) {
       throw new NotFoundException('Coin not found');
     }
@@ -20,7 +23,6 @@ export class CoinsService {
   }
 
   async upsert(coin: Coin) {
-    this.storage[coin.id] = coin;
-    return coin;
+    return this.coinRepository.save(coin);
   }
 }

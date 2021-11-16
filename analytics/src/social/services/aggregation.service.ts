@@ -2,8 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { TwitterGatewayService } from './twitter.service';
 import { CoinsService } from '../../coins/services/coins.service';
 import { plainToClass } from 'class-transformer';
-import { SocialMention } from '../entities/mention.entity';
-import { MentionService } from './mention.service';
+import { SocialPost } from '../entities/post.entity';
+import { PostService } from './post.service';
 
 @Injectable()
 export class SocialAggregationService {
@@ -12,7 +12,7 @@ export class SocialAggregationService {
   constructor(
     private readonly twitterGateway: TwitterGatewayService,
     private readonly coinsService: CoinsService,
-    private readonly mentionService: MentionService,
+    private readonly socialPostService: PostService,
   ) {}
 
   async fetch() {
@@ -23,7 +23,7 @@ export class SocialAggregationService {
     );
     const mentions = twitterMentions.map((group) =>
       group.statuses.map((mention) => {
-        return plainToClass(SocialMention, {
+        return plainToClass(SocialPost, {
           id: mention.id,
           socialId: mention.id,
           text: mention.text,
@@ -35,7 +35,7 @@ export class SocialAggregationService {
     );
     return Promise.all(
       mentions.map((group) =>
-        group.map((mention) => this.mentionService.upsert(mention)),
+        group.map((mention) => this.socialPostService.save(mention)),
       ),
     );
   }

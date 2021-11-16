@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { SocialMention } from '../entities/mention.entity';
+import { SocialPost } from '../entities/post.entity';
 
 @Injectable()
-export class MentionService {
-  private storage: { [id: string]: SocialMention } = {};
+export class PostService {
+  private storage: { [id: string]: SocialPost } = {};
 
-  upsert(mention: SocialMention) {
+  save(mention: SocialPost) {
     this.storage[mention.id] = mention;
     return mention;
   }

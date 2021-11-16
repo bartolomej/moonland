@@ -34,6 +34,7 @@ export const typeorm: TypeOrmModuleOptions = {
   password: DB_PASSWORD,
   username: DB_USER,
   database: DB_DATABASE,
-  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  entities: [],
   synchronize: true, // disable in stable production environment
+  autoLoadEntities: true,
 };
