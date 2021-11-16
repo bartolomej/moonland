@@ -25,9 +25,29 @@ services:
       - TWITTER_API_SECRET=${TWITTER_API_SECRET}
       - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
       - TWITTER_ACCESS_TOKEN_SECRET=${TWITTER_ACCESS_TOKEN_SECRET}
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
     expose:
       - 5001
     ports:
       - "5001:3000"
     volumes:
       - ./analytics:/app
+  mariadb:
+    container_name: shitcoin-analysis-mariadb
+    image: mariadb
+    restart: always
+    volumes:
+      - ./database/mariadb/data:/var/lib/mysql
+    expose:
+      - 3306 # expose default mariadb port for debugging purposes
+    ports:
+      - "3306:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=rootPass
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+      - MARIADB_USER=${DB_USER}
+      - MARIADB_DATABASE=${DB_DATABASE}
