@@ -59,16 +59,25 @@ export class SocialAggregationService {
       .flat();
     await Promise.all(
       users.map((user) =>
-        this.socialUserService.save(user).catch((e: AppException) => {
-          // ignore duplicate entries
-          if (!e.isType(AppExceptionType.DUPLICATE_ENTRY)) {
-            throw e;
-          }
-        }),
+        this.socialUserService
+          .save(user)
+          .catch(this.handleSaveError.bind(this)),
       ),
     );
     return Promise.all(
-      mentions.map((posts) => this.socialPostService.save(posts)),
+      mentions.map((posts) =>
+        this.socialPostService
+          .save(posts)
+          .catch(this.handleSaveError.bind(this)),
+      ),
     );
+  }
+
+  private handleSaveError(e: AppException) {
+    // ignore duplicate entries
+    this.logger.debug(`Save error: ${e.message}`);
+    if (!e.isType(AppExceptionType.DUPLICATE_ENTRY)) {
+      throw e;
+    }
   }
 }
