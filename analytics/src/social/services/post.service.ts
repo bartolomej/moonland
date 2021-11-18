@@ -77,6 +77,8 @@ export class SocialPostService {
       query.andWhere(`p.text RLIKE :regex`, { regex: coinSymbol });
     }
 
+    query.groupBy('format');
+
     const result = await query.getRawMany();
     return result.map((res) => ({
       label: res.date,
