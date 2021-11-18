@@ -11,13 +11,19 @@ import { SocialPost } from './entities/post.entity';
 import { SocialUser } from './entities/user.entity';
 import { SocialUserService } from './services/user.service';
 import { SocialUserController } from './controllers/user.controller';
+import { StatsController } from './controllers/stats.controller';
 
 @Module({
   imports: [
     CoinsModule,
     TypeOrmModule.forFeature([SocialPlatform, SocialPost, SocialUser]),
   ],
-  controllers: [SocialController, SocialPostController, SocialUserController],
+  controllers: [
+    SocialController,
+    SocialPostController,
+    SocialUserController,
+    StatsController,
+  ],
   providers: [
     SocialPostService,
     TwitterGatewayService,

@@ -9,8 +9,8 @@ export class SocialPost {
   @Column({ type: 'text' })
   text: string;
 
-  @Column({ type: 'bigint' })
-  timestamp: number;
+  @Column({ type: 'datetime' })
+  createdAt: Date;
 
   @ManyToOne(() => SocialUser, (user) => user.posts)
   user: SocialUser;

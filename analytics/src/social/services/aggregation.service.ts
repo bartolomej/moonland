@@ -50,7 +50,7 @@ export class SocialAggregationService {
           return plainToClass(SocialPost, {
             id: mention.id,
             text: mention.text,
-            timestamp: new Date(mention.created_at).getTime(),
+            createdAt: new Date(mention.created_at),
             user: mention.user.id,
             userMentions: mention.entities.user_mentions.map((user) => user.id),
           });
