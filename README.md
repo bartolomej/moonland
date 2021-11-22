@@ -12,7 +12,11 @@ Create `.env` file in project root, with environment variables defined in `.env.
 
 3. Once you have installed and setup docker, run:
     ```shell
+   # run development configuration
     docker-compose up -d
+   
+   # run production configuration
+   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
     ```
    
    Your local app should now be up and running on http://localhost:5000 🥳.
