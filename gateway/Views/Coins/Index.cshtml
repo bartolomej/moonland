@@ -1,0 +1,42 @@
+@model IEnumerable<gateway.Models.Coin>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Coins</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date added</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.shortName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dateAdded)
+            </td>
+            <td>
+                <form asp-action="CreateBookmark" asp-route-id="@item.Id" >
+                    <input type="submit" value="Bookmark" class="btn btn-danger" style="width: 80px; height: 20px; text-align: center; color: white; background: #23b7e5; font-size: 13px; border-color: #23b7e5; border-radius:2px; padding: 0px; " /> |
+                    <!--
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    -->
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

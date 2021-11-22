@@ -3,23 +3,23 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://0.0.0.0:42659",
-      "sslPort": 44388
+      "applicationUrl": "http://localhost:16371",
+      "sslPort": 44333
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
+    "gateway": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:7069;http://localhost:5263",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "shitcoin_analysis_backend": {
-      "commandName": "Project",
-      "dotnetRunMessages": "true",
+    "IIS Express": {
+      "commandName": "IISExpress",
       "launchBrowser": true,
-      "applicationUrl": "http://0.0.0.0:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

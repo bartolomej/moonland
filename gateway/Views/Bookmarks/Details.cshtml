@@ -1,0 +1,36 @@
+@model gateway.Models.CoinBookmark
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>CoinBookmark</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.coinId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.coinId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.userId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.userId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.dateAdded)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.dateAdded)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
