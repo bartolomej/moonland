@@ -36,6 +36,7 @@ services:
       - "5001:3000"
     volumes:
       - ./analytics:/app
+      - /app/node_modules
   mariadb:
     container_name: shitcoin-analysis-mariadb
     image: mariadb
