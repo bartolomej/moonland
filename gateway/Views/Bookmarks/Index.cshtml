@@ -1,7 +1,7 @@
-@model IEnumerable<gateway.Models.CoinBookmark>
+@model IEnumerable<gateway.Models.Coin>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bookmarks";
 }
 
 <h1>Bookmarks</h1>
@@ -13,15 +13,8 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.coinId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.userId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dateAdded)
-            </th>
+            <th style="width: 250px;">Coin</th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -29,20 +22,14 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.coinId)
+                <img src="@item.logo" alt="@item.name logo" style="width: 30px; height: 30px; margin: 5px;">
+                @Html.DisplayFor(modelItem => item.name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.userId)
+                <p style="color:grey;  margin: 5px; ">@item.symbol</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.dateAdded)
-            </td>
-            <td>
-                <!--
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                -->
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.bookmarkId" style="float: right; margin: 5px;">Delete</a>
             </td>
         </tr>
 }

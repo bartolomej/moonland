@@ -7,7 +7,7 @@ namespace gateway.Models
     {
         public int Id { get; set; }
         public string  userId  { get; set; }
-        public int coinId { get; set; }
+        public string coinId { get; set; }
         public DateTime dateAdded { get; set; }
     }
 }

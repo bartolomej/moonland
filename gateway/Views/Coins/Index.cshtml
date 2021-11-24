@@ -6,14 +6,11 @@
 
 <h1>Coins</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Date added</th>
+            <th style="width: 250px;">Coin</th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -21,19 +18,15 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.shortName)
+                <img src="@item.logo" alt="@item.name logo" style="width: 30px; height: 30px; margin: 5px;">
+                @Html.DisplayFor(modelItem => item.name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.dateAdded)
+                <p style="color:grey;  margin: 5px; ">@item.symbol</p>
             </td>
             <td>
-                <form asp-action="CreateBookmark" asp-route-id="@item.Id" >
-                    <input type="submit" value="Bookmark" class="btn btn-danger" style="width: 80px; height: 20px; text-align: center; color: white; background: #23b7e5; font-size: 13px; border-color: #23b7e5; border-radius:2px; padding: 0px; " /> |
-                    <!--
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    -->
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <form asp-action="CreateBookmark" asp-route-id="@item.id" >
+                    <input type="submit" value="Bookmark" class="btn btn-danger" style="width: 80px; height: 20px; text-align: center; color: white; background: #23b7e5; font-size: 13px; border-color: #23b7e5; border-radius:2px; padding: 0px; float: right; margin: 10px;" />
                 </form>
             </td>
         </tr>

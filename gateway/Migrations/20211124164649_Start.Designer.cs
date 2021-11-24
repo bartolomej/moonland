@@ -12,7 +12,7 @@ using gateway.Data;
 namespace gateway.Migrations
 {
     [DbContext(typeof(CryptoContext))]
-    [Migration("20211121204347_Start")]
+    [Migration("20211124164649_Start")]
     partial class Start
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,25 +98,6 @@ namespace gateway.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("gateway.Models.Coin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("dateAdded")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("shortName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Coin", (string)null);
-                });
-
             modelBuilder.Entity("gateway.Models.CoinBookmark", b =>
                 {
                     b.Property<int>("Id")
@@ -125,8 +106,8 @@ namespace gateway.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("coinId")
-                        .HasColumnType("int");
+                    b.Property<string>("coinId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("dateAdded")
                         .HasColumnType("datetime2");
@@ -160,8 +141,6 @@ namespace gateway.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("coinId");
 
                     b.ToTable("Sentiments");
                 });
@@ -303,15 +282,6 @@ namespace gateway.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("gateway.Models.CoinSentiment", b =>
-                {
-                    b.HasOne("gateway.Models.Coin", null)
-                        .WithMany("Sentiments")
-                        .HasForeignKey("coinId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -361,11 +331,6 @@ namespace gateway.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("gateway.Models.Coin", b =>
-                {
-                    b.Navigation("Sentiments");
                 });
 #pragma warning restore 612, 618
         }

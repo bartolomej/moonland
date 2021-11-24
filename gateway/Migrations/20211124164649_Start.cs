@@ -52,32 +52,34 @@ namespace gateway.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Coin",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    shortName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    dateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Coin", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CoinBookmark",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     userId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    coinId = table.Column<int>(type: "int", nullable: false),
+                    coinId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     dateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CoinBookmark", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sentiments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    userId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    coinId = table.Column<int>(type: "int", nullable: false),
+                    sentimentValue = table.Column<bool>(type: "bit", nullable: false),
+                    dateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sentiments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,28 +188,6 @@ namespace gateway.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Sentiments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    userId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    coinId = table.Column<int>(type: "int", nullable: false),
-                    sentimentValue = table.Column<bool>(type: "bit", nullable: false),
-                    dateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Sentiments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Sentiments_Coin_coinId",
-                        column: x => x.coinId,
-                        principalTable: "Coin",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -246,11 +226,6 @@ namespace gateway.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sentiments_coinId",
-                table: "Sentiments",
-                column: "coinId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -281,9 +256,6 @@ namespace gateway.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Coin");
         }
     }
 }

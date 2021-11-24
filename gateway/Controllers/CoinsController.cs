@@ -16,6 +16,7 @@ namespace gateway.Controllers
     {
         public readonly UserManager<ApplicationUser> _usermanager;
         private readonly CryptoContext _context;
+        static readonly HttpClient client = new HttpClient();
 
         public CoinsController(CryptoContext context, UserManager<ApplicationUser> userManager)
         {
@@ -26,50 +27,13 @@ namespace gateway.Controllers
         // GET: Coins
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Coins.ToListAsync());
-        }
+            HttpResponseMessage response = await client.GetAsync("http://83.212.82.177:5001/api/coins");
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
 
-        // GET: Coins/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            List<Coin> coins = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Coin>>(responseBody);
 
-            var coin = await _context.Coins
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (coin == null)
-            {
-                return NotFound();
-            }
-
-            return View(coin);
-        }
-
-        // GET: Coins/Create
-        [Authorize]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Coins/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,shortName,dateAdded")] Coin coin)
-        {
-            if (ModelState.IsValid)
-            {
-                coin.dateAdded = DateTime.Now;
-                _context.Add(coin);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(coin);
+            return View(coins);
         }
 
         
@@ -79,9 +43,8 @@ namespace gateway.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBookmark(int id)
+        public async Task<IActionResult> CreateBookmark(string id)
         {
-            
             if (ModelState.IsValid)
             {
                 var currentUser = _usermanager.GetUserId(User);
@@ -91,95 +54,6 @@ namespace gateway.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction(nameof(Index));
-        }
-
-        // GET: Coins/Edit/5
-        [Authorize]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var coin = await _context.Coins.FindAsync(id);
-            if (coin == null)
-            {
-                return NotFound();
-            }
-            return View(coin);
-        }
-
-        // POST: Coins/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,shortName,dateAdded")] Coin coin)
-        {
-            if (id != coin.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(coin);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CoinExists(coin.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(coin);
-        }
-
-        // GET: Coins/Delete/5
-        [Authorize]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var coin = await _context.Coins
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (coin == null)
-            {
-                return NotFound();
-            }
-
-            return View(coin);
-        }
-
-        // POST: Coins/Delete/5
-        [Authorize]
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var coin = await _context.Coins.FindAsync(id);
-            _context.Coins.Remove(coin);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool CoinExists(int id)
-        {
-            return _context.Coins.Any(e => e.Id == id);
         }
     }
 }

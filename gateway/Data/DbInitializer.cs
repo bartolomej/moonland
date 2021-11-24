@@ -13,57 +13,10 @@ namespace gateway.Data
             context.Database.EnsureCreated();
 
             // Look for any Coins.
-            if (context.Coins.Any())
+            if (context.Users.Any())
             {
                 return;   // DB has been seeded
             }
-
-            var Coins = new Coin[]
-            {
-            new Coin{shortName="Alexander",dateAdded=DateTime.Parse("2005-09-01")},
-            new Coin{shortName="Alonso",dateAdded=DateTime.Parse("2002-09-01")},
-            new Coin{shortName="Anand",dateAdded=DateTime.Parse("2003-09-01")},
-            new Coin{shortName="Barzdukas",dateAdded=DateTime.Parse("2002-09-01")},
-            new Coin{shortName="Li",dateAdded=DateTime.Parse("2002-09-01")},
-            new Coin{shortName="Justice",dateAdded=DateTime.Parse("2001-09-01")},
-            new Coin{shortName="Norman",dateAdded=DateTime.Parse("2003-09-01")},
-            new Coin{shortName="Olivetto",dateAdded=DateTime.Parse("2005-09-01")}
-            };
-            foreach (Coin s in Coins)
-            {
-                context.Coins.Add(s);
-            }
-            context.SaveChanges();
-
-            var bookmarks = new CoinBookmark[]
-            {
-            new CoinBookmark{coinId=1,userId="temp"},
-            new CoinBookmark{coinId=2,userId="temp"},
-            new CoinBookmark{coinId=3,userId="temp"},
-            new CoinBookmark{coinId=3,userId="temp2"},
-            new CoinBookmark{coinId=5,userId="temp3"},
-            new CoinBookmark{coinId=7,userId="temp3"},
-            new CoinBookmark{coinId=7,userId="temp4"}
-            };
-            foreach (CoinBookmark c in bookmarks)
-            {
-                context.Bookmarks.Add(c);
-            }
-            context.SaveChanges();
-
-            var sentiments = new CoinSentiment[]
-            {
-            new CoinSentiment{coinId=1,sentimentValue=true,dateAdded=DateTime.Parse("2005-09-01"),userId="temp"},
-            new CoinSentiment{coinId=3,sentimentValue=true,dateAdded=DateTime.Parse("2005-09-02"),userId="temp"},
-            new CoinSentiment{coinId=4,sentimentValue=false,dateAdded=DateTime.Parse("2005-09-05"),userId="temp"},
-            new CoinSentiment{coinId=4,sentimentValue=false,dateAdded=DateTime.Parse("2005-09-07"),userId="temp2"},
-            new CoinSentiment{coinId=5,sentimentValue=true,dateAdded=DateTime.Parse("2005-09-10"),userId="temp2"},
-            };
-            foreach (CoinSentiment e in sentiments)
-            {
-                context.Sentiments.Add(e);
-            }
-            context.SaveChanges();
 
             var roles = new IdentityRole[] {
                 new IdentityRole{Id="1", Name="Administrator"},

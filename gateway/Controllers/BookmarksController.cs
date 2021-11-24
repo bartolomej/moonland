@@ -17,6 +17,7 @@ namespace gateway.Controllers
     {
         public readonly UserManager<ApplicationUser> _usermanager;
         private readonly CryptoContext _context;
+        static readonly HttpClient client = new HttpClient();
 
         public BookmarksController(CryptoContext context, UserManager<ApplicationUser> userManager)
         {
@@ -28,8 +29,21 @@ namespace gateway.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUser = _usermanager.GetUserId(User);
-            var bookmarks = await _context.Bookmarks.Where(x => x.userId == currentUser).ToListAsync();
-            return View(bookmarks);
+            List<CoinBookmark> bookmarks = await _context.Bookmarks.Where(x => x.userId == currentUser).ToListAsync();
+            List<Coin> bookmarkedCoins = new List<Coin>();
+
+            foreach (CoinBookmark bookmark in bookmarks)
+            {
+                HttpResponseMessage response = await client.GetAsync($"http://83.212.82.177:5001/api/coins/{bookmark.coinId}");
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Coin bookmarkedCoin = Newtonsoft.Json.JsonConvert.DeserializeObject<Coin>(responseBody);
+
+                bookmarkedCoin.bookmarkId = bookmark.Id;
+                bookmarkedCoins.Add(bookmarkedCoin);
+            }
+
+            return View(bookmarkedCoins);
         }
 
         // GET: Bookmarks/Details/5
