@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { SocialPost } from '../../social/entities/post.entity';
 
 @Entity()
 export class Coin {
@@ -39,4 +41,7 @@ export class Coin {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @OneToMany(() => SocialPost, (post) => post.coin)
+  mentions: SocialPost[];
 }

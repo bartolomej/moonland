@@ -18,7 +18,8 @@ type TimeSeriesParams = {
   groupByPeriod?: GroupByPeriod;
   startDate?: string;
   endDate?: string;
-  coinSymbol?: string;
+  searchQuery?: string;
+  coin?: string;
 };
 
 type TimeSeriesItem = {
@@ -37,8 +38,16 @@ export class SocialPostService {
     return this.repository.save(post).catch(handleTypeormError);
   }
 
-  findAll() {
-    return this.repository.find();
+  async findAll(coin?: string, limit?: number) {
+    const query = this.repository.createQueryBuilder('p');
+    if (coin) {
+      query.where('p.coin = :coin', { coin });
+    }
+    query.orderBy('p.createdAt', 'DESC');
+    if (limit) {
+      query.limit(limit);
+    }
+    return query.getMany();
   }
 
   findOne(id: string) {
@@ -53,7 +62,8 @@ export class SocialPostService {
     groupByPeriod,
     startDate,
     endDate,
-    coinSymbol,
+    searchQuery,
+    coin,
   }: TimeSeriesParams): Promise<TimeSeriesItem[]> {
     // compose a format that enables count grouping by defined period
     // Y=year, M=month, V=week, d=day, H=hour, i=minute, s=second
@@ -65,7 +75,8 @@ export class SocialPostService {
       .createQueryBuilder('p')
       .select('count(*)', 'count')
       .addSelect(`DATE_FORMAT(p.createdAt, '${format}')`, 'format')
-      .addSelect('p.createdAt', 'date');
+      .addSelect('p.createdAt', 'date')
+      .innerJoin('p.coin', 'coin');
 
     if (startDate) {
       query.andWhere(`p.createdAt >= :startDate`, { startDate });
@@ -73,8 +84,11 @@ export class SocialPostService {
     if (endDate) {
       query.andWhere(`p.createdAt <= :endDate`, { endDate });
     }
-    if (coinSymbol) {
-      query.andWhere(`p.text RLIKE :regex`, { regex: coinSymbol });
+    if (coin) {
+      query.andWhere(`coin.symbol = :coin`, { coin });
+    }
+    if (searchQuery) {
+      query.andWhere(`p.text RLIKE :regex`, { regex: searchQuery });
     }
 
     query.groupBy('format');

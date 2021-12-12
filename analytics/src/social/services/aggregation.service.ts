@@ -22,8 +22,10 @@ export class SocialAggregationService {
   async fetch() {
     const coins = await this.coinsService.findAll();
     this.logger.debug(`Aggregating mentions for ${coins.length} coins`);
+
+    // remap data to target form
     const twitterMentions = await Promise.all(
-      coins.map((coin) => this.twitterGateway.findAllByQuery(coin.symbol)),
+      coins.map((coin) => this.twitterGateway.findAll(coin)),
     );
     const users = twitterMentions
       .map((group) =>
@@ -45,7 +47,7 @@ export class SocialAggregationService {
       .flat()
       .flat();
     const mentions = twitterMentions
-      .map((group) =>
+      .map((group, mentionIndex) =>
         group.statuses.map((mention) => {
           return plainToClass(SocialPost, {
             id: mention.id,
@@ -53,10 +55,13 @@ export class SocialAggregationService {
             createdAt: new Date(mention.created_at),
             user: mention.user.id,
             userMentions: mention.entities.user_mentions.map((user) => user.id),
+            coin: coins[mentionIndex],
           });
         }),
       )
       .flat();
+
+    // store results
     await Promise.all(
       users.map((user) =>
         this.socialUserService

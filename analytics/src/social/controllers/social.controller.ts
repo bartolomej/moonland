@@ -22,7 +22,7 @@ export class SocialController {
     example: 2,
   })
   findAlTweets(@Query('q') query, @Query('l', ParseIntPipe) limit) {
-    return this.twitterService.findAllByQuery(query, limit);
+    return this.twitterService.findAll(query, limit);
   }
 
   @Post('aggregate')

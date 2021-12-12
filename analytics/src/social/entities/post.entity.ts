@@ -1,5 +1,6 @@
 import { SocialUser } from './user.entity';
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Coin } from '../../coins/entities/coin.entity';
 
 @Entity()
 export class SocialPost {
@@ -14,4 +15,7 @@ export class SocialPost {
 
   @ManyToOne(() => SocialUser, (user) => user.posts)
   user: SocialUser;
+
+  @ManyToOne(() => Coin, (coin) => coin.mentions)
+  coin: Coin;
 }

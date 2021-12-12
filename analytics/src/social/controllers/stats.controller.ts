@@ -1,4 +1,4 @@
-import { Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { GroupByPeriod, SocialPostService } from '../services/post.service';
 import { ApiQuery } from '@nestjs/swagger';
 
@@ -31,17 +31,25 @@ export class StatsController {
     example: 'BTC',
     required: false,
   })
+  @ApiQuery({
+    name: 'q',
+    description: 'Search query. Additional filtration by text content.',
+    example: 'To the moon',
+    required: false,
+  })
   getTimeframeStats(
     @Query('start') startDate,
     @Query('end') endDate,
     @Query('period') groupByPeriod,
-    @Query('coin') coinSymbol,
+    @Query('coin') coin,
+    @Query('q') searchQuery,
   ) {
     return this.socialPostService.getTimeframeStats({
       startDate,
       endDate,
       groupByPeriod,
-      coinSymbol,
+      searchQuery,
+      coin,
     });
   }
 }
