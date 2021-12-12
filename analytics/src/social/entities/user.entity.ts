@@ -6,13 +6,17 @@ export class SocialUser {
   @PrimaryColumn()
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   username: string;
 
-  @Column()
+  @Column({ nullable: true })
   name: string;
 
-  // TODO: add additional fields like description, connectionsCount,..
+  @Column({ nullable: true })
+  followersCount: number;
+
+  @Column({ nullable: true })
+  description: string;
 
   @OneToMany(() => SocialPost, (mention) => mention.user)
   posts: SocialPost[];

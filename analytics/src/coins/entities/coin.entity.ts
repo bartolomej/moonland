@@ -34,6 +34,9 @@ export class Coin {
   @Column()
   cmcId: string;
 
+  @Column()
+  cmcRank: number;
+
   // TODO: add financial data as rank, price, market cap, volume, number of pairs,...
 
   @UpdateDateColumn()

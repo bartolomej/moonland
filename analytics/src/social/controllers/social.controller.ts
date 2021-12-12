@@ -1,4 +1,11 @@
-import { Controller, Get, Query, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  ParseIntPipe,
+  Post,
+  Param,
+} from '@nestjs/common';
 import { TwitterGatewayService } from '../services/twitter.service';
 import { ApiQuery } from '@nestjs/swagger';
 import { SocialAggregationService } from '../services/aggregation.service';
@@ -28,5 +35,10 @@ export class SocialController {
   @Post('aggregate')
   aggregate() {
     return this.aggregationService.fetch();
+  }
+
+  @Get('user/:ids')
+  getUser(@Param('ids') ids) {
+    return this.twitterService.findUsers([ids]);
   }
 }

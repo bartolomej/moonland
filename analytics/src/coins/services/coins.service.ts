@@ -10,8 +10,8 @@ export class CoinsService {
     private readonly coinRepository: Repository<Coin>,
   ) {}
 
-  async findAll() {
-    return this.coinRepository.find();
+  async findAll(limit?: number) {
+    return this.coinRepository.find({ take: limit });
   }
 
   async findOne(id: string) {

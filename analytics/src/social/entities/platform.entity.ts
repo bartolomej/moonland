@@ -4,6 +4,8 @@ export enum SocialPlatformType {
   TWITTER = 'twitter',
 }
 
+// TODO: add as relation to user or post when support for multiple platforms is added
+
 @Entity()
 export class SocialPlatform {
   @PrimaryColumn()

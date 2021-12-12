@@ -1,5 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CoinmarketcapGatewayService } from './coinmarketcap.service';
+import {
+  CmcCoinInfo,
+  CmcMetadataMap,
+  CoinmarketcapGatewayService,
+} from './coinmarketcap.service';
 import { plainToClass } from 'class-transformer';
 import { Coin } from '../entities/coin.entity';
 import { CoinsService } from './coins.service';
@@ -14,7 +18,7 @@ export class CoinAggregationService {
   ) {}
 
   // TODO: remove limit later on
-  async refetchCoinData(limit?: number) {
+  async fetch(limit?: number) {
     let cmcCoins = await this.cmcService.fetchBasicInfo();
     if (limit) {
       cmcCoins = cmcCoins.splice(0, limit);
@@ -23,8 +27,16 @@ export class CoinAggregationService {
     const cmcMetadataMap = await this.cmcService.fetchInfoInBatch(
       cmcCoins.map((coin) => coin.id),
     );
-    const coins = cmcCoins.map((coin) => {
-      const metadata = cmcMetadataMap[coin.id];
+    return await Promise.all(
+      this.serializeCoins(cmcCoins, cmcMetadataMap).map((coin) =>
+        this.coinService.upsert(coin),
+      ),
+    );
+  }
+
+  private serializeCoins(coins: CmcCoinInfo[], cmcCoinMeta: CmcMetadataMap) {
+    return coins.map((coin) => {
+      const metadata = cmcCoinMeta[coin.id];
       return plainToClass(Coin, {
         id: coin.symbol,
         name: coin.name,
@@ -34,10 +46,8 @@ export class CoinAggregationService {
         websiteUrl: metadata.urls.website[0],
         explorerUrl: metadata.urls.explorer[0],
         cmcId: coin.id,
+        cmcRank: coin.rank,
       });
     });
-    return await Promise.all(
-      coins.map((coin) => this.coinService.upsert(coin)),
-    );
   }
 }

@@ -6,7 +6,12 @@ import { SocialPost } from '../entities/post.entity';
 import { SocialPostService } from './post.service';
 import { SocialUserService } from './user.service';
 import { SocialUser } from '../entities/user.entity';
-import { AppException, AppExceptionType } from '../../errors';
+import { User as TwitterUser } from 'twitter-api-client/dist/interfaces/types/SearchTypes';
+import {
+  UsersLookup as TwitterUserLookup,
+  Search as TwitterSearch,
+} from 'twitter-api-client';
+import { Coin } from '../../coins/entities/coin.entity';
 
 @Injectable()
 export class SocialAggregationService {
@@ -20,69 +25,91 @@ export class SocialAggregationService {
   ) {}
 
   async fetch() {
-    const coins = await this.coinsService.findAll();
+    const coins = await this.coinsService.findAll(1);
+
     this.logger.debug(`Aggregating mentions for ${coins.length} coins`);
 
     // remap data to target form
-    const twitterMentions = await Promise.all(
-      coins.map((coin) => this.twitterGateway.findAll(coin)),
+    const tweetsByCoins = await this.fetchTweetsByCoins(coins);
+    const users = await this.fetchUsersByTweets(tweetsByCoins);
+    const posts = this.serializeTweets(tweetsByCoins, coins);
+
+    this.logger.debug(`Aggregated ${posts.length} mentions`);
+
+    // store results
+    await this.storeMultiple(
+      (user) => this.socialUserService.save(user),
+      users,
     );
-    const users = twitterMentions
-      .map((group) =>
-        group.statuses.map((mention) => [
-          plainToClass(SocialUser, {
-            id: mention.user.id,
-            name: mention.user.name,
-            username: mention.user.screen_name,
-          }),
-          ...mention.entities.user_mentions.map((user) =>
-            plainToClass(SocialUser, {
-              id: user.id,
-              name: user.name,
-              username: user.screen_name,
-            }),
-          ),
-        ]),
-      )
-      .flat()
-      .flat();
-    const mentions = twitterMentions
+    await this.storeMultiple(
+      (post) => this.socialPostService.save(post),
+      posts,
+    );
+  }
+
+  private async fetchTweetsByCoins(coins: Coin[]) {
+    return Promise.all(coins.map((coin) => this.twitterGateway.findAll(coin)));
+  }
+
+  private async fetchUsersByTweets(tweets: TwitterSearch[]) {
+    const groups = tweets.map((group) =>
+      group.statuses.map(async (tweet) => [
+        SocialAggregationService.serializeTwitterUser(tweet.user),
+        ...(await this.fetchUsers(
+          tweet.entities.user_mentions.map((u) => u.id_str),
+        )),
+      ]),
+    );
+    return (await Promise.all(groups.flat().flat())).flat();
+  }
+
+  private async fetchUsers(userIds: any[]) {
+    const users = await this.twitterGateway.findUsers(userIds);
+    return users.map((user) =>
+      SocialAggregationService.serializeTwitterUser(user),
+    );
+  }
+
+  private serializeTweets(tweets: TwitterSearch[], coins: Coin[]) {
+    return tweets
       .map((group, mentionIndex) =>
         group.statuses.map((mention) => {
           return plainToClass(SocialPost, {
-            id: mention.id,
+            id: mention.id_str,
             text: mention.text,
             createdAt: new Date(mention.created_at),
             user: mention.user.id,
-            userMentions: mention.entities.user_mentions.map((user) => user.id),
+            userMentions: mention.entities.user_mentions.map(
+              (user) => user.id_str,
+            ),
             coin: coins[mentionIndex],
           });
         }),
       )
       .flat();
-
-    // store results
-    await Promise.all(
-      users.map((user) =>
-        this.socialUserService
-          .save(user)
-          .catch(this.handleSaveError.bind(this)),
-      ),
-    );
-    return Promise.all(
-      mentions.map((posts) =>
-        this.socialPostService
-          .save(posts)
-          .catch(this.handleSaveError.bind(this)),
-      ),
-    );
   }
 
-  private handleSaveError(e: AppException) {
-    // ignore duplicate entries
-    this.logger.debug(`Save error: ${e.message}`);
-    if (!e.isType(AppExceptionType.DUPLICATE_ENTRY)) {
-      throw e;
-    }
+  private static serializeTwitterUser(user: TwitterUser | TwitterUserLookup) {
+    return plainToClass(SocialUser, {
+      id: user.id_str,
+      name: user.name,
+      username: user.screen_name,
+      followersCount: user.followers_count,
+      description: user.description,
+    });
+  }
+
+  private storeMultiple<T>(
+    savePromise: (e: T) => Promise<T | void>,
+    entities: T[],
+  ) {
+    return Promise.all(
+      entities.map((e) =>
+        savePromise(e).catch((e) => {
+          // ignore errors for now
+          this.logger.debug(`Save error: ${e.message}`);
+        }),
+      ),
+    );
   }
 }

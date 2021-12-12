@@ -36,6 +36,6 @@ export class CoinsController {
   })
   refetch(@Query('l', ParseIntPipe) limit) {
     // TODO: remove in the future, schedule tasks using cron
-    return this.aggregationService.refetchCoinData(limit);
+    return this.aggregationService.fetch(limit);
   }
 }

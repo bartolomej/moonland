@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { coinMarketCap } from '../../config';
 import axios from 'axios';
 
-type CoinmarketcapResStatus = {
+type CmcResStatus = {
   timestamp: string;
   error_code: string;
   error_message: string;
@@ -11,14 +11,14 @@ type CoinmarketcapResStatus = {
   notice: null | any;
 };
 
-type CoinmarketcapRes<T> = {
-  status: CoinmarketcapResStatus;
+type CmcRes<T> = {
+  status: CmcResStatus;
   data: T;
 };
 
-type CoinCategory = 'all' | 'spot' | 'derivatives' | 'otc' | 'perpetual';
+type CmcCoinCategory = 'all' | 'spot' | 'derivatives' | 'otc' | 'perpetual';
 
-type CoinPlatformInfo = null | {
+type CmcCoinPlatformInfo = null | {
   id: number;
   name: string;
   symbol: string;
@@ -26,30 +26,30 @@ type CoinPlatformInfo = null | {
   token_address: string;
 };
 
-type CoinCommonInfo = {
+type CmcCoinCommonInfo = {
   id: number;
   name: string;
   symbol: string;
   slug: string;
 };
 
-export type CoinInfo = CoinCommonInfo & {
+export type CmcCoinInfo = CmcCoinCommonInfo & {
   rank: number;
   is_active: number;
   first_historical_data: string;
   last_historical_data: string;
-  platform: CoinPlatformInfo;
+  platform: CmcCoinPlatformInfo;
 };
 
-export type CoinMetadata = CoinCommonInfo & {
+export type CmcCoinMetadata = CmcCoinCommonInfo & {
   logo: string;
   description: string;
   date_added: string;
   tags: string[];
   'tag-names': string[];
   'tag-groups': string[];
-  platform: CoinPlatformInfo;
-  category: CoinCategory;
+  platform: CmcCoinPlatformInfo;
+  category: CmcCoinCategory;
   date_launched: string | null;
   urls: {
     website: string[];
@@ -64,7 +64,7 @@ export type CoinMetadata = CoinCommonInfo & {
   };
 };
 
-export type CoinPairData = {
+export type CmcCoinPairData = {
   price: number;
   volume_24h: number;
   volume_change_24h: number;
@@ -77,7 +77,7 @@ export type CoinPairData = {
   last_updated: string;
 };
 
-type CoinListingData = CoinCommonInfo & {
+export type CmcCoinListingData = CmcCoinCommonInfo & {
   cmc_rank: number;
   num_market_pairs: number;
   circulating_supply: number;
@@ -86,14 +86,14 @@ type CoinListingData = CoinCommonInfo & {
   last_updated: string;
   date_added: string;
   tags: string[];
-  platform: CoinPlatformInfo;
-  quote: { [symbol: string]: CoinPairData };
+  platform: CmcCoinPlatformInfo;
+  quote: { [symbol: string]: CmcCoinPairData };
 };
 
-type MetadataMap = { [slug: string]: CoinMetadata };
-type MetadataResponse = CoinmarketcapRes<MetadataMap>;
-type LatestListingResponse = CoinmarketcapRes<CoinListingData[]>;
-type InfoResponse = CoinmarketcapRes<CoinInfo[]>;
+export type CmcMetadataMap = { [slug: string]: CmcCoinMetadata };
+type CmcMetadataResponse = CmcRes<CmcMetadataMap>;
+type CmcLatestListingResponse = CmcRes<CmcCoinListingData[]>;
+type CmcInfoResponse = CmcRes<CmcCoinInfo[]>;
 
 @Injectable()
 export class CoinmarketcapGatewayService {
@@ -121,7 +121,7 @@ export class CoinmarketcapGatewayService {
   }
 
   async fetchBasicInfo() {
-    const { data: axiosData } = await this.fetch<InfoResponse>(
+    const { data: axiosData } = await this.fetch<CmcInfoResponse>(
       '/v1/cryptocurrency/map',
     );
     return axiosData.data;
@@ -132,15 +132,15 @@ export class CoinmarketcapGatewayService {
     while (coinIds.length > 0) {
       requests.push(this.fetchInfo(coinIds.splice(0, 1000)));
     }
-    const responses = await Promise.all<MetadataMap>(requests);
-    return responses.reduce<MetadataMap>(
+    const responses = await Promise.all<CmcMetadataMap>(requests);
+    return responses.reduce<CmcMetadataMap>(
       (prev, curr) => ({ ...prev, ...curr }),
       {},
     );
   }
 
   async fetchInfo(coinIds: number[]) {
-    const { data: axiosData } = await this.fetch<MetadataResponse>(
+    const { data: axiosData } = await this.fetch<CmcMetadataResponse>(
       '/v1/cryptocurrency/info',
       { id: coinIds.join(',') },
     );
@@ -148,7 +148,7 @@ export class CoinmarketcapGatewayService {
   }
 
   async fetchLatestListing() {
-    const { data: axiosData } = await this.fetch<LatestListingResponse>(
+    const { data: axiosData } = await this.fetch<CmcLatestListingResponse>(
       '/v1/cryptocurrency/listing/latest',
     );
     return axiosData.data;
