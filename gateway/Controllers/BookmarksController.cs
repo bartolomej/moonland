@@ -43,7 +43,9 @@ namespace gateway.Controllers
                 bookmarkedCoins.Add(bookmarkedCoin);
             }
 
-            return View(bookmarkedCoins);
+
+
+            return View(bookmarkedCoins.OrderBy(o=>o.name));
         }
 
         // GET: Bookmarks/Details/5
