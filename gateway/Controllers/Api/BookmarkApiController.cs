@@ -13,7 +13,7 @@ namespace gateway.Controllers_Api
 {
     [Route("api/bookmark")]
     [ApiController]
-    //[ApiKeyAuth]
+    [ApiKeyAuth]
     public class BookmarkApiController : ControllerBase
     {
         private readonly CryptoContext _context;

@@ -39,11 +39,9 @@ namespace gateway.Controllers
             }
 
             List<Coin> coins = new List<Coin>();
-            response = await client.GetAsync($"http://localhost:5000/api/bookmark/user/{userID}");
-            response.EnsureSuccessStatusCode();
-            string responseBookmarksBody = await response.Content.ReadAsStringAsync();
-
-            List<CoinBookmark> bookmarks = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CoinBookmark>>(responseBookmarksBody);
+            
+            var currentUser = _usermanager.GetUserId(User);
+            List<CoinBookmark> bookmarks = await _context.Bookmarks.Where(x => x.userId == currentUser).ToListAsync();
 
             foreach(Coin coin in tempCoins){
                 foreach(CoinBookmark bookmrk in bookmarks){
