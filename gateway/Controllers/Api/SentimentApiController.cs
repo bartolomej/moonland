@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using gateway.Data;
 using gateway.Models;
+using gateway.Filters;
 
 namespace gateway.Controllers_Api
 {
-    [Route("api/[controller]")]
+    [Route("api/sentiment")]
     [ApiController]
+    [ApiKeyAuth]
     public class SentimentApiController : ControllerBase
     {
         private readonly CryptoContext _context;
