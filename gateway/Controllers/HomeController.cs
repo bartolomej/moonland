@@ -30,14 +30,4 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-
-    [Authorize]
-    [HttpGet("api/coins")]
-    public async Task<string> GetAsync()
-    {
-        HttpResponseMessage response = await client.GetAsync("https://app.flowser.dev/api/projects");
-        response.EnsureSuccessStatusCode();
-        string responseBody = await response.Content.ReadAsStringAsync();
-        return responseBody;
-    }
 }
