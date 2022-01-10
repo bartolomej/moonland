@@ -1,4 +1,7 @@
 @model IEnumerable<gateway.Models.Coin>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Index";
@@ -25,9 +28,19 @@
                 <p style="color:grey;  margin: 5px; ">@item.symbol</p>
             </td>
             <td>
-                <form asp-action="CreateBookmark" asp-route-id="@item.id" >
-                    <input type="submit" value="Bookmark" class="btn btn-danger" style="width: 80px; height: 20px; text-align: center; color: white; background: #23b7e5; font-size: 13px; border-color: #23b7e5; border-radius:2px; padding: 0px; float: right; margin: 10px;" />
-                </form>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    @if (@item.isBookmarked)
+                    {
+                        <form asp-action="DeleteBookmark" asp-route-id="@item.bookmarkId" >
+                            <input type="submit" value="" class="BookmarkButton"/>
+                        </form>   
+                    }else{
+                        <form asp-action="CreateBookmark" asp-route-id="@item.id" >
+                            <input type="submit" value="" class="unBookmarkButton" />
+                        </form>   
+                    }
+                }
             </td>
         </tr>
 }

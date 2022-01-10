@@ -22,16 +22,37 @@ namespace gateway.Controllers
         {
             _context = context;
             _usermanager = userManager;
+            client.DefaultRequestHeaders.Add("ApiKey", "Shitcoins");
         }
 
         // GET: Coins
         public async Task<IActionResult> Index()
         {
+            String userID = _usermanager.GetUserId(User);
             HttpResponseMessage response = await client.GetAsync("http://83.212.82.177:5001/api/coins");
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
 
-            List<Coin> coins = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Coin>>(responseBody);
+            List<Coin> tempCoins = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Coin>>(responseBody);
+            if (userID == null){
+                return View(tempCoins);
+            }
+
+            List<Coin> coins = new List<Coin>();
+            
+            var currentUser = _usermanager.GetUserId(User);
+            List<CoinBookmark> bookmarks = await _context.Bookmarks.Where(x => x.userId == currentUser).ToListAsync();
+
+            foreach(Coin coin in tempCoins){
+                foreach(CoinBookmark bookmrk in bookmarks){
+                    if (bookmrk.coinId == coin.id){
+                        coin.bookmarkId = bookmrk.Id;
+                        coin.isBookmarked = true;
+                        break;
+                    }
+                }
+                coins.Add(coin);
+            }
 
             return View(coins);
         }
@@ -53,6 +74,17 @@ namespace gateway.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteBookmark(int id)
+        {
+            var coinBookmark = await _context.Bookmarks.FindAsync(id);
+            _context.Bookmarks.Remove(coinBookmark);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

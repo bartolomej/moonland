@@ -15,7 +15,7 @@ namespace gateway.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<CoinBookmark>().ToTable("CoinSentiments");
+            modelBuilder.Entity<CoinSentiment>().ToTable("CoinSentiments");
             modelBuilder.Entity<CoinBookmark>().ToTable("CoinBookmark");
         }
     }
