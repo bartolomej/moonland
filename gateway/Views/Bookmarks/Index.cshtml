@@ -29,7 +29,9 @@
                 <p style="color:grey;  margin: 5px; ">@item.symbol</p>
             </td>
             <td>
-                <a asp-action="Delete" asp-route-id="@item.bookmarkId" style="float: right; margin: 5px;">Delete</a>
+                <form asp-action="DeleteConfirmed" asp-route-id="@item.bookmarkId" >
+                    <input type="submit" value="" class="BookmarkButton"/>
+                </form>
             </td>
         </tr>
 }
