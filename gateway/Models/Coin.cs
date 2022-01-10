@@ -15,5 +15,6 @@ namespace gateway.Models
         public string updatedAt { get; set; }
         public string websiteUrl { get; set; }
         public int bookmarkId { get; set; }
+        public Boolean isBookmarked { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace gateway.Controllers_Api
 {
     [Route("api/sentiment")]
     [ApiController]
-    [ApiKeyAuth]
+    //[ApiKeyAuth]
     public class SentimentApiController : ControllerBase
     {
         private readonly CryptoContext _context;

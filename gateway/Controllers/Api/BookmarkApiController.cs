@@ -13,7 +13,7 @@ namespace gateway.Controllers_Api
 {
     [Route("api/bookmark")]
     [ApiController]
-    [ApiKeyAuth]
+    //[ApiKeyAuth]
     public class BookmarkApiController : ControllerBase
     {
         private readonly CryptoContext _context;
@@ -42,6 +42,13 @@ namespace gateway.Controllers_Api
             }
 
             return coinBookmark;
+        }
+        
+        // GET: All bookmarks for a user
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<IEnumerable<CoinBookmark>>> GetUserCoinBookmarks(string id)
+        {
+            return await _context.Bookmarks.Where(x => x.userId == id).ToListAsync();
         }
 
         // PUT: api/BookmarkApi/5

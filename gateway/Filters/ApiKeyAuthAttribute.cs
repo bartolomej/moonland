@@ -16,12 +16,14 @@ namespace gateway.Filters
 
             if (!context.HttpContext.Request.Headers.TryGetValue(ApiKeyHeaderName, out var potentialApiKey))
             {
+                Console.WriteLine("API HEASERS: " + context.HttpContext.Request.Headers.TryGetValue(ApiKeyHeaderName, out var newkj));
                 context.Result = new UnauthorizedResult();
                 return;
             }
 
             var configuration = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
             var apiKey = configuration.GetValue<string>("ApiKey");
+            Console.WriteLine("API KEY: " + apiKey);
 
             if (!apiKey.Equals(potentialApiKey))
             {
