@@ -11,7 +11,11 @@ export class CoinsService {
   ) {}
 
   async findAll(limit?: number) {
-    return this.coinRepository.find({ take: limit });
+    return this.coinRepository
+      .createQueryBuilder()
+      .select()
+      .take(limit)
+      .getMany();
   }
 
   async findOne(id: string) {

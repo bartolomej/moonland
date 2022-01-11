@@ -18,8 +18,12 @@ export class CoinsController {
   ) {}
 
   @Get()
-  findAll() {
-    return this.coinsService.findAll();
+  @ApiQuery({
+    name: 'l',
+    description: 'Limit the number of returned coins',
+  })
+  findAll(@Query('l') limit) {
+    return this.coinsService.findAll(limit);
   }
 
   @Get(':id')
