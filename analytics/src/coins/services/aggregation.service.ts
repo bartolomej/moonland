@@ -7,6 +7,9 @@ import {
 import { plainToClass } from 'class-transformer';
 import { Coin } from '../entities/coin.entity';
 import { CoinsService } from './coins.service';
+import { Interval } from '@nestjs/schedule';
+import { coinFetchInterval } from '../../config';
+import { timePerformance } from '../../utils';
 
 @Injectable()
 export class CoinAggregationService {
@@ -17,7 +20,16 @@ export class CoinAggregationService {
     private readonly coinService: CoinsService,
   ) {}
 
-  // TODO: remove limit later on
+  @Interval(coinFetchInterval)
+  async intervalFetch() {
+    // replace with proper persistent job queue if needed
+    await timePerformance(
+      'coin fetch',
+      this.fetch(),
+      this.logger.debug.bind(this),
+    );
+  }
+
   async fetch(limit?: number) {
     let cmcCoins = await this.cmcService.fetchBasicInfo();
     if (limit) {

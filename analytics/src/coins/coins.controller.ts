@@ -20,10 +20,16 @@ export class CoinsController {
   @Get()
   @ApiQuery({
     name: 'l',
-    description: 'Limit the number of returned coins',
+    description: 'Limit the number of returned coins.',
+    example: 10,
   })
-  findAll(@Query('l') limit) {
-    return this.coinsService.findAll(limit);
+  @ApiQuery({
+    name: 'q',
+    description: 'Filter results by search query.',
+    example: 'crypto',
+  })
+  findAll(@Query('l') limit, @Query('q') searchQuery) {
+    return this.coinsService.findAll({ limit, searchQuery });
   }
 
   @Get(':id')

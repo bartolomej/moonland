@@ -12,6 +12,9 @@ import {
   Search as TwitterSearch,
 } from 'twitter-api-client';
 import { Coin } from '../../coins/entities/coin.entity';
+import { Interval } from '@nestjs/schedule';
+import { socialFetchInterval } from '../../config';
+import { timePerformance } from '../../utils';
 
 @Injectable()
 export class SocialAggregationService {
@@ -24,10 +27,35 @@ export class SocialAggregationService {
     private readonly socialUserService: SocialUserService,
   ) {}
 
-  async fetch() {
-    const coins = await this.coinsService.findAll(1);
+  @Interval(socialFetchInterval)
+  async intervalFetch() {
+    const totalCoins = 10; // fetch for top 10 coins for now
+    // const totalCoins = await this.coinsService.count();
+    for (let i = 0; i < totalCoins; i++) {
+      const coins = await this.coinsService.findAll({
+        orderBy: 'cmcRank',
+        order: 'ASC',
+        limit: 1,
+        skip: i,
+      });
+      try {
+        await timePerformance(
+          'social fetch',
+          this.fetch(coins.map((coin) => coin.id)),
+          this.logger.debug.bind(this),
+        );
+      } catch (e) {
+        this.logger.error('Failed to fetch social data: ', e);
+      }
+    }
+  }
 
-    this.logger.debug(`Aggregating mentions for ${coins.length} coins`);
+  async fetch(coinIds: string[]) {
+    this.logger.debug(`Aggregating mentions for ${coinIds.join(',')} coins`);
+
+    const coins = await Promise.all(
+      coinIds.map((id) => this.coinsService.findOne(id)),
+    );
 
     // remap data to target form
     const tweetsByCoins = await this.fetchTweetsByCoins(coins);

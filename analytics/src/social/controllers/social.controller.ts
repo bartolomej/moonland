@@ -33,8 +33,13 @@ export class SocialController {
   }
 
   @Post('aggregate')
-  aggregate() {
-    return this.aggregationService.fetch();
+  @ApiQuery({
+    name: 'id',
+    description: 'Array of coin ids to fetch.',
+    example: 'BTC,ETH',
+  })
+  aggregate(@Query('id') id = '') {
+    return this.aggregationService.fetch(id.split(','));
   }
 
   @Get('user/:ids')

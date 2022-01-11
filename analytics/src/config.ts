@@ -14,7 +14,16 @@ const {
   DB_DATABASE,
   DB_USER,
   DB_PASSWORD,
+
+  COIN_FETCH_INTERVAL,
+  SOCIAL_FETCH_INTERVAL,
 } = process.env;
+
+const second = 1000;
+const minute = 60 * second;
+const hour = 60 * minute;
+export const coinFetchInterval = +COIN_FETCH_INTERVAL || hour;
+export const socialFetchInterval = +SOCIAL_FETCH_INTERVAL || minute;
 
 export const coinMarketCap = {
   apiKey: COINMARKETCAP_API_KEY,
