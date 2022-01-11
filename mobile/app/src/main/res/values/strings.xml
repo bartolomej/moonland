@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Moonland</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_bookmarks">Bookmarks</string>
+    <string name="search_description_text">Search the world’s largest awesome collection.</string>
+    <string name="awesome_logo_desc">Awesome logo</string>
+    <string name="prompt_search">Search anything …</string>
+    <string name="search_empty_message">Nothing to be seen here :(</string>
+    <string name="awesome_item_sample_title">bartolomej/awesome-search</string>
+    <string name="awesome_item_sample_desc">Search engine that helps you find awesome stuff from Awesome Lists collection.</string>
+    <string name="search_initial_title">Searching something ? 👀</string>
+    <string name="search_initial_desc">Discover new awesome internet resources, carefully picked by the <a href="https://github.com/sindresorhus/awesome">Awesome Community</a></string>
+    <string name="search_error_title">Error occurred 👀</string>
+    <string name="search_error_desc">Something must went wrong. Maybe restart the app ?</string>
+    <string name="no_items_in_group_title">No items saved yet 👀</string>
+    <string name="no_items_in_group_desc">When searching for awesome content just click the bookmark button for items that you find interesting.</string>
+    <string name="no_search_items_title">No results 👀</string>
+    <string name="no_search_items_desc">There seems to be nothing here. Maybe try searching something similar ?</string>
+    <string name="no_bookmarks_title">No bookmarks yet 👀</string>
+    <string name="no_bookmarks_desc">You can easily create bookmarks group and add awesome items to it. Try it !</string>
+</resources>
