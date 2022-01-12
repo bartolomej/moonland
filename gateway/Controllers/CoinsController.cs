@@ -87,5 +87,17 @@ namespace gateway.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Graph(string symbol)
+        {
+            Console.WriteLine($"http://83.212.82.177:5001/api/social/stats?coin={symbol}&period=MINUTE");
+            HttpResponseMessage response = await client.GetAsync($"http://83.212.82.177:5001/api/social/stats?coin={symbol}&period=MINUTE");
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            List<CoinStats> coinStats = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CoinStats>>(responseBody);
+
+            return View(coinStats);
+        }
     }
 }

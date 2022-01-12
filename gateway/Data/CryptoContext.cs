@@ -12,6 +12,8 @@ namespace gateway.Data
         public DbSet<CoinSentiment> Sentiments { get; set; }
         public DbSet<CoinBookmark> Bookmarks { get; set; }
 
+        public DbSet<ApplicationUser> User { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
