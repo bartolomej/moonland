@@ -2,8 +2,14 @@
 
 MoonLand queries social media platforms to provide social sentiment analytics for various crypto coins.
 
-| Discover shitcoins          | Filter by search term    | View coin details              |
-|-----------------------------|------------------------------|--------------------------------|
+Currently moonland supports only Twitter API as a data source, but can be easily extended to support multiple data sources (Reddit, 4Chan, Facebook,..).
+
+A "SocialPost" is a single (unique) instance of social media content that contains topic of interest (e.g. mention of some cryptocurrency). Moonland maintains it's own index of posts of interests, which is updated within predefined intervals.
+
+Moonland can return simple social analytics based on data stored in it's internal index of posts.
+
+| Discover shitcoins          | Filter by search term         | View coin details              |
+|-----------------------------|-------------------------------|--------------------------------|
 | ![](./images/coin-list.png) | ![](./images/coin-search.png) | ![](./images/coin-details.png) |
 
 | View bookmark list              | Change user settings           | 
@@ -42,6 +48,34 @@ In terms of application architecture, Moonland is based on a simple microservice
 <p align="center">
     <img src="https://user-images.githubusercontent.com/36109955/143024077-9d8a4e2e-ddc7-49ed-8f1c-0f5e6b812a1b.png" width="700" />
 </p>
+
+
+
+## ⚙️ Configuration
+
+Most of the system is easily portable across multiple environments. Sensitive and configurable parameters are defined with OS environmental variables. 
+
+Bellow is a complete list of different environmental variables supported. 
+
+> NOTE: Variables that are not explicitly defined as *optional* are required for the system to function.
+
+Data source authentication:
+- `COINMARKETCAP_API_KEY`
+- `TWITTER_API_KEY`
+- `TWITTER_API_SECRET`
+- `TWITTER_ACCESS_TOKEN`
+- `TWITTER_ACCESS_TOKEN_SECRET`
+
+Analytics service database:
+- `DB_HOST`
+- `DB_PORT`
+- `DB_DATABASE`
+- `DB_USER`
+- `DB_PASSWORD`
+
+Data aggregation intervals:
+- `COIN_FETCH_INTERVAL` (optional) - crypto data aggregation interval in ms (defaults to 1h)
+- `SOCIAL_FETCH_INTERVAL` (optional) - social data aggregation interval in ms (defaults to 10min)
 
 ## ✌️ Contributors
 
