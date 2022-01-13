@@ -9,12 +9,16 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MoonlandService {
 
     @GET("coins")
     Call<List<Coin>> fetchCoins(@Query("l") int limit, @Query("q") String query);
+
+    @GET("coins/{id}")
+    Call<Coin> fetchCoin(@Path("id") String id);
 
     class Factory {
         public static MoonlandService create() {

@@ -41,7 +41,6 @@ public class DetailsFragment extends Fragment {
     private DetailsViewModel viewModel;
     private Coin coin;
     private BookmarksDialogFragment bookmarksDialogFragment;
-    private List<GroupWithItems> groupWithItems;
     private String uid;
     private String url;
     private View root;
@@ -50,7 +49,6 @@ public class DetailsFragment extends Fragment {
     private ImageView imageView;
     private Button urlButton;
     private Toolbar toolbar;
-    private LinearLayout tagsLinearLayout;
 
 
     public DetailsFragment() {
@@ -90,23 +88,13 @@ public class DetailsFragment extends Fragment {
         imageView = root.findViewById(R.id.details_image);
         urlButton = root.findViewById(R.id.details_url_btn);
         toolbar = root.findViewById(R.id.details_top_menu);
-        tagsLinearLayout = root.findViewById(R.id.tags_linear_layout);
     }
 
     private void showBookmarkDialog() {
-        if (groupWithItems != null) {
-            bookmarksDialogFragment.setGroups(groupWithItems);
-            bookmarksDialogFragment.show(getActivity().getSupportFragmentManager(), "test");
-        }
+        // TODO: implement
     }
 
     private void registerStateObservers() {
-        viewModel.getGroupsWithItems().observe(this.getViewLifecycleOwner(), new Observer<List<GroupWithItems>>() {
-            @Override
-            public void onChanged(List<GroupWithItems> items) {
-                groupWithItems = items;
-            }
-        });
         viewModel.getCoin(uid).observe(getViewLifecycleOwner(), new Observer<Coin>() {
             @Override
             public void onChanged(Coin item) {
@@ -116,13 +104,13 @@ public class DetailsFragment extends Fragment {
                 descriptionView.setText(item.description);
                 Picasso.get().load(item.logo).into(imageView);
                 url = item.websiteUrl;
-//                setTags(item.tags);
             }
         });
         viewModel.getMoonlandError().observe(getViewLifecycleOwner(), new Observer<MoonlandError>() {
             @Override
             public void onChanged(MoonlandError moonlandError) {
-                Log.d(TAG, "Error: " + moonlandError.getMessage());
+                // TODO: handle error appropriately
+                Log.d(TAG, "DETAILS FRAGMENT FETCH ERROR: " + moonlandError.getMessage());
             }
         });
     }
@@ -154,17 +142,6 @@ public class DetailsFragment extends Fragment {
     private void openPageInBrowser(String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
-    }
-
-    private void setTags (ArrayList<String> tags) {
-        // TODO: use TableView for multi row functionality
-//        if (tags != null && tags.size() > 0) {
-//            for (String tag : tags) {
-//                TextView tagText = (TextView) View.inflate(this.getContext(), R.layout.tag_item, null);
-//                tagText.setText(tag);
-//                tagsLinearLayout.addView(tagText);
-//            }
-//        }
     }
 
 }

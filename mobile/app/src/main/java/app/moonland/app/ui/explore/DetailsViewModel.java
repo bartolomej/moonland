@@ -38,10 +38,6 @@ public class DetailsViewModel extends ViewModel {
         return itemMutableLiveData;
     }
 
-    LiveData<List<GroupWithItems>> getGroupsWithItems() {
-        return new MutableLiveData<>();
-    }
-
     void addToBookmarks (String uid, Coin item) {
         // TODO: do something with it
     }
