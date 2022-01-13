@@ -25,10 +25,10 @@ export class Coin {
   @Column({ type: 'text' })
   description: string;
 
-  @Column()
+  @Column({ nullable: true })
   websiteUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   explorerUrl: string;
 
   @Column()
