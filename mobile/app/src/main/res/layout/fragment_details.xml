@@ -36,7 +36,7 @@
             app:layout_constraintWidth_percent="0.25"
             app:riv_corner_radius="5dp"
             app:riv_mutate_background="true"
-            app:riv_tile_mode="repeat"
+            app:riv_tile_mode="clamp"
             tools:src="@tools:sample/avatars" />
 
         <TextView
@@ -45,10 +45,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:fontFamily="@font/montserrat_medium"
-            android:text="Sample"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
+            android:lineHeight="@dimen/med_line_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/details_image"
@@ -61,7 +61,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/montserrat_medium"
-            android:text="Sample"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"

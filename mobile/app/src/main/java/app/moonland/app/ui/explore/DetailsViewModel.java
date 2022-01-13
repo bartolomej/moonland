@@ -5,14 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import java.util.List;
-
 import app.moonland.app.MoonlandError;
 import app.moonland.app.data.Repository;
 import app.moonland.app.data.Resource;
-import app.moonland.app.data.models.AwesomeItem;
 import app.moonland.app.data.models.Coin;
-import app.moonland.app.data.models.GroupWithItems;
 
 public class DetailsViewModel extends ViewModel {
 

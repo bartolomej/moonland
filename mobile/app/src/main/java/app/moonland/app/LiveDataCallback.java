@@ -16,7 +16,7 @@ public class LiveDataCallback<T> implements Callback<T> {
 
     private final MutableLiveData<Resource<T>> result;
 
-    public LiveDataCallback(MutableLiveData<Resource<T>> result) {
+    public  LiveDataCallback(MutableLiveData<Resource<T>> result) {
         this.result = result;
     }
 

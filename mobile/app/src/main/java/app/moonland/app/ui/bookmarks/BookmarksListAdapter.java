@@ -10,20 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import app.moonland.app.R;
-import app.moonland.app.data.models.GroupWithItems;
 
 public class BookmarksListAdapter extends RecyclerView.Adapter {
 
     private final LayoutInflater layoutInflater;
-    private List<GroupWithItems> items;
     private View.OnClickListener onClickListener;
 
     BookmarksListAdapter(Context context) {
-        items = new ArrayList<>();
         layoutInflater = LayoutInflater.from(context);
     }
 
@@ -37,23 +31,23 @@ public class BookmarksListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        GroupWithItems current = items.get(position);
-        BookmarkItemViewHolder viewHolder = (BookmarkItemViewHolder) holder;
-        viewHolder.setItemsCount(current.getItemsCount());
-        viewHolder.setName(current.bookmarkGroup.name);
+//        GroupWithItems current = items.get(position);
+//        BookmarkItemViewHolder viewHolder = (BookmarkItemViewHolder) holder;
+//        viewHolder.setItemsCount(current.getItemsCount());
+//        viewHolder.setName(current.bookmarkGroup.name);
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return 0;
     }
 
-    void setItems (List<GroupWithItems> groupWithItems) {
-        if (items != null) {
-            items = groupWithItems;
-        }
-        notifyDataSetChanged();
-    }
+//    void setItems (List<GroupWithItems> groupWithItems) {
+//        if (items != null) {
+//            items = groupWithItems;
+//        }
+//        notifyDataSetChanged();
+//    }
 
     public void setOnClickListener(View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;

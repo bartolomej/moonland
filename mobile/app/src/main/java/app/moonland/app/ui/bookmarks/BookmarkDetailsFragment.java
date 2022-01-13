@@ -24,10 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import app.moonland.app.R;
-import app.moonland.app.data.models.AwesomeItem;
 import app.moonland.app.data.models.UIMessage;
 import app.moonland.app.ui.CoinListAdapter;
 
@@ -43,7 +40,6 @@ public class BookmarkDetailsFragment extends Fragment {
     private NavController navController;
     private BookmarksViewModal viewModel;
     private CoinListAdapter coinListAdapter;
-    private List<AwesomeItem> awesomeItems;
     private RecyclerView recyclerView;
     private String groupUid;
     private TextView toolbarText;
@@ -111,8 +107,8 @@ public class BookmarkDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
-                AwesomeItem item = awesomeItems.get(itemPosition);
-                openPageInBrowser(item.url);
+//                AwesomeItem item = awesomeItems.get(itemPosition);
+//                openPageInBrowser(item.url);
             }
         });
         toolbar.findViewById(R.id.edit_bookmark_delete_btn).setOnClickListener(new View.OnClickListener() {

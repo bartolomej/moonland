@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import app.moonland.app.LiveDataCallback;
 import app.moonland.app.MoonlandError;
@@ -35,6 +36,7 @@ public class Repository {
             detailsRequest.cancel();
         }
         detailsRequest = service.fetchCoin(id);
+        detailsRequest.timeout().timeout(5, TimeUnit.SECONDS);
         detailsRequest.enqueue(new LiveDataCallback<Coin>(result));
         return result;
     }
@@ -45,6 +47,7 @@ public class Repository {
             indexRequest.cancel();
         }
         indexRequest = service.fetchCoins(50, searchQuery);
+        indexRequest.timeout().timeout(5, TimeUnit.SECONDS);
         indexRequest.enqueue(new LiveDataCallback<List<Coin>>(result));
         return result;
     }

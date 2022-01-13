@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,16 +22,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import app.moonland.app.MoonlandError;
 import app.moonland.app.R;
 import app.moonland.app.data.models.Coin;
-import app.moonland.app.data.models.GroupWithItems;
 
 
 public class DetailsFragment extends Fragment {
@@ -40,7 +34,6 @@ public class DetailsFragment extends Fragment {
     private static final String TAG = "DetailsFragment";
     private DetailsViewModel viewModel;
     private Coin coin;
-    private BookmarksDialogFragment bookmarksDialogFragment;
     private String uid;
     private String url;
     private View root;
@@ -82,7 +75,6 @@ public class DetailsFragment extends Fragment {
     }
 
     private void initViews() {
-        bookmarksDialogFragment = new BookmarksDialogFragment();
         titleView = root.findViewById(R.id.details_title);
         descriptionView = root.findViewById(R.id.details_description);
         imageView = root.findViewById(R.id.details_image);
@@ -126,15 +118,6 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 showBookmarkDialog();
-            }
-        });
-        bookmarksDialogFragment.setOnPickListener(new BookmarksDialogFragment.BookmarksDialogListener() {
-            @Override
-            public void onDialogItemPick(GroupWithItems group) {
-                viewModel.addToBookmarks(group.bookmarkGroup.name, coin);
-                Snackbar.make(root, "Added to " + group.bookmarkGroup.name, Snackbar.LENGTH_SHORT)
-                        .setActionTextColor(getResources().getColor(android.R.color.white ))
-                        .show();
             }
         });
     }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/awesome_item_margin_top"
+    android:layout_marginTop="@dimen/coin_item_margin_top"
     android:background="@drawable/awesome_item_bcg"
     android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
     android:clickable="true"
@@ -27,7 +27,7 @@
             android:fontFamily="@font/montserrat_medium"
             android:text="@string/awesome_item_sample_title"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/awesome_item_title_size"
+            android:textSize="@dimen/coin_item_title_size"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +40,7 @@
             android:fontFamily="@font/montserrat_regular"
             android:text="@string/awesome_item_sample_desc"
             android:textColor="@color/colorTextLight"
-            android:textSize="@dimen/awesome_item_desc_size"
+            android:textSize="@dimen/coin_item_desc_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_title" />
 

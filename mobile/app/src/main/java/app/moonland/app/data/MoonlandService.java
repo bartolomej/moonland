@@ -2,23 +2,28 @@ package app.moonland.app.data;
 
 import java.util.List;
 
-import app.moonland.app.data.models.AwesomeItem;
 import app.moonland.app.data.models.Coin;
-import app.moonland.app.data.models.SearchResponse;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MoonlandService {
+
+    // use static userId for demo
+    String userId = "e04d6e9b-9dc8-41dd-b468-2a304946d309";
 
     @GET("coins")
     Call<List<Coin>> fetchCoins(@Query("l") int limit, @Query("q") String query);
 
     @GET("coins/{id}")
     Call<Coin> fetchCoin(@Path("id") String id);
+
+    @PUT("coins/{id}")
+    Call<Coin> bookmarkCoin(@Path("id") String id);
 
     class Factory {
         public static MoonlandService create() {

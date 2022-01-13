@@ -18,10 +18,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
 import app.moonland.app.R;
-import app.moonland.app.data.models.GroupWithItems;
 import app.moonland.app.data.models.UIMessage;
 
 public class BookmarksFragment extends Fragment {
@@ -36,7 +33,6 @@ public class BookmarksFragment extends Fragment {
     private TextView messageDescription;
     private ConstraintLayout messageView;
     private BookmarksListAdapter bookmarksListAdapter;
-    private List<GroupWithItems> groupWithItems;
     private ImageView messageImage;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -89,10 +85,10 @@ public class BookmarksFragment extends Fragment {
             public void onClick(View v) {
                 // TODO; refactor
                 int itemPosition = bookmarksRecyclerView.getChildLayoutPosition(v);
-                GroupWithItems item = groupWithItems.get(itemPosition);
-                Navigation.findNavController(v).navigate(
-                        BookmarksFragmentDirections.actionNavigationBookmarksToBookmarkDetailsFragment(item.bookmarkGroup.name)
-                );
+//                GroupWithItems item = groupWithItems.get(itemPosition);
+//                Navigation.findNavController(v).navigate(
+//                        BookmarksFragmentDirections.actionNavigationBookmarksToBookmarkDetailsFragment(item.bookmarkGroup.name)
+//                );
             }
         });
     }
