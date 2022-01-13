@@ -31,7 +31,11 @@ Create `.env` file in project root, with environment variables defined in `.env.
 
 ## 🏛 Architecture
 
-MoonLand is based on a simple microservice architecture, with 2 services:
+Moonland data model is designed with extensibility in mind. We could easily extend the platform to support multiple data sources (aka. "social platforms"), etc.
+
+![](./images/data-model.png)
+
+In terms of application architecture, Moonland is based on a simple microservice architecture, with 2 services:
 - `analytics` is concerned with data aggregation and analysis
 - `gateway` deals with user management and authentication (also acts as a proxy)
 
