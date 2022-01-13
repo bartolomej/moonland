@@ -2,6 +2,14 @@
 
 MoonLand queries social media platforms to provide social sentiment analytics for various crypto coins.
 
+| Discover shitcoins          | Filter by search term    | View coin details              |
+|-----------------------------|------------------------------|--------------------------------|
+| ![](./images/coin-list.png) | ![](./images/coin-search.png) | ![](./images/coin-details.png) |
+
+| View bookmark list              | Change user settings           | 
+|---------------------------------|--------------------------------|
+| ![](./images/web-bookmarks.png) | ![](./images/web-settings.png) |
+
 ## 👋 Get started
 
 1. You need to install Docker & docker-compose in order to run this app with Docker. 
