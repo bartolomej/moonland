@@ -12,4 +12,4 @@ services:
     container_name: analytics-prod
     build:
       context: analytics
-      dockerfile: ./Dockerfile.prod
+      dockerfile: ./Dockerfile # TODO: temp fix, use Dockerfile.prod (see https://github.com/bartolomej/moonland/issues/11)
