@@ -29,7 +29,7 @@ import java.util.List;
 import app.moonland.app.R;
 import app.moonland.app.data.models.AwesomeItem;
 import app.moonland.app.data.models.UIMessage;
-import app.moonland.app.ui.AwesomeListAdapter;
+import app.moonland.app.ui.CoinListAdapter;
 
 
 public class BookmarkDetailsFragment extends Fragment {
@@ -42,7 +42,7 @@ public class BookmarkDetailsFragment extends Fragment {
     private ImageView messageImage;
     private NavController navController;
     private BookmarksViewModal viewModel;
-    private AwesomeListAdapter awesomeListAdapter;
+    private CoinListAdapter coinListAdapter;
     private List<AwesomeItem> awesomeItems;
     private RecyclerView recyclerView;
     private String groupUid;
@@ -71,10 +71,10 @@ public class BookmarkDetailsFragment extends Fragment {
     }
 
     private void setupViews() {
-        awesomeListAdapter = new AwesomeListAdapter(this.getContext());
+        coinListAdapter = new CoinListAdapter(this.getContext());
         recyclerView = root.findViewById(R.id.bookmark_items_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerView.setAdapter(awesomeListAdapter);
+        recyclerView.setAdapter(coinListAdapter);
         toolbarText = root.findViewById(R.id.bookmark_details_title);
         toolbar = root.findViewById(R.id.bookmark_details_toolbar);
         messageView = root.findViewById(R.id.message_view_container);
@@ -107,7 +107,7 @@ public class BookmarkDetailsFragment extends Fragment {
                 }
             }
         });
-        awesomeListAdapter.setOnClickListener(new View.OnClickListener() {
+        coinListAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int itemPosition = recyclerView.getChildLayoutPosition(v);

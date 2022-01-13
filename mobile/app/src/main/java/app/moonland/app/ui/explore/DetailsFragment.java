@@ -119,7 +119,7 @@ public class DetailsFragment extends Fragment {
 //                setTags(item.tags);
             }
         });
-        viewModel.getAwesomeError().observe(getViewLifecycleOwner(), new Observer<MoonlandError>() {
+        viewModel.getMoonlandError().observe(getViewLifecycleOwner(), new Observer<MoonlandError>() {
             @Override
             public void onChanged(MoonlandError moonlandError) {
                 Log.d(TAG, "Error: " + moonlandError.getMessage());

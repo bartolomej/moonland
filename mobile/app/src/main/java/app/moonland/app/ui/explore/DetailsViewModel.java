@@ -46,7 +46,7 @@ public class DetailsViewModel extends ViewModel {
         // TODO: do something with it
     }
 
-    LiveData<MoonlandError> getAwesomeError () {
+    LiveData<MoonlandError> getMoonlandError() {
         return errorMutableLiveData;
     }
 

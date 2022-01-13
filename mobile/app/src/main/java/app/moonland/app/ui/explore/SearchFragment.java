@@ -17,6 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +26,7 @@ import java.util.List;
 import app.moonland.app.R;
 import app.moonland.app.data.models.Coin;
 import app.moonland.app.data.models.UIMessage;
-import app.moonland.app.ui.AwesomeListAdapter;
+import app.moonland.app.ui.CoinListAdapter;
 
 
 public class SearchFragment extends Fragment {
@@ -37,7 +38,7 @@ public class SearchFragment extends Fragment {
     private TextView messageDescription;
     private ConstraintLayout messageView;
     private ImageView messageImage;
-    private AwesomeListAdapter resultListAdapter;
+    private CoinListAdapter resultListAdapter;
     private EditText searchField;
     private View root;
     private SearchViewModel viewModel;
@@ -61,7 +62,7 @@ public class SearchFragment extends Fragment {
     private void initViews() {
         searchField = root.findViewById(R.id.search_field);
         recyclerView = root.findViewById(R.id.results_view);
-        resultListAdapter = new AwesomeListAdapter(this.getContext());
+        resultListAdapter = new CoinListAdapter(this.getContext());
         recyclerView.setAdapter(resultListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         loadingView = root.findViewById(R.id.loading_view_container);
@@ -128,12 +129,11 @@ public class SearchFragment extends Fragment {
         resultListAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: refactor
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
-//                AwesomeItem item = viewModel.getSearchItems().get(itemPosition);
-//                Navigation.findNavController(v).navigate(
-//                        SearchFragmentDirections.actionNavigationHomeToItemDetails(item.uid)
-//                );
+                Coin item = viewModel.getCoins().get(itemPosition);
+                Navigation.findNavController(v).navigate(
+                        SearchFragmentDirections.actionNavigationHomeToItemDetails(item.id)
+                );
             }
         });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

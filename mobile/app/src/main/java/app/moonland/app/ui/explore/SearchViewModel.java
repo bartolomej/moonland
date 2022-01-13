@@ -62,7 +62,7 @@ public class SearchViewModel extends ViewModel {
     void searchQuery(String query) {
         this.query.postValue(query);
         this.isLoading.setValue(true);
-        LiveData<Resource<List<Coin>>> source = Repository.getInstance().fetchCoins();
+        LiveData<Resource<List<Coin>>> source = Repository.getInstance().fetchCoins(query);
         source.observeForever(new Observer<Resource<List<Coin>>>() {
             @Override
             public void onChanged(Resource<List<Coin>> resource) {

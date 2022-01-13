@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 public interface MoonlandService {
 
     @GET("coins")
-    Call<List<Coin>> fetchCoins();
+    Call<List<Coin>> fetchCoins(@Query("l") int limit, @Query("q") String query);
 
     class Factory {
         public static MoonlandService create() {

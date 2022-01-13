@@ -19,15 +19,16 @@ import java.util.List;
 import app.moonland.app.R;
 import app.moonland.app.data.models.Coin;
 
-public class AwesomeListAdapter extends RecyclerView.Adapter<SearchItemViewHolder> {
+public class CoinListAdapter extends RecyclerView.Adapter<SearchItemViewHolder> {
 
     private static final String TAG = "AwesomeListAdapter";
     private List<Coin> items;
     private LayoutInflater layoutInflater;
     private View.OnClickListener onClickListener;
     private Context context;
+    private final int maxDescriptionLength = 100;
 
-    public AwesomeListAdapter(Context context) {
+    public CoinListAdapter(Context context) {
         this.context = context;
         this.items = new ArrayList<>();
         layoutInflater = LayoutInflater.from(context);
@@ -36,7 +37,7 @@ public class AwesomeListAdapter extends RecyclerView.Adapter<SearchItemViewHolde
     @NonNull
     @Override
     public SearchItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.awesome_item,
+        View view = layoutInflater.inflate(R.layout.coin_item,
                 parent, false);
         view.setOnClickListener(onClickListener);
         return new SearchItemViewHolder(view);
@@ -46,7 +47,7 @@ public class AwesomeListAdapter extends RecyclerView.Adapter<SearchItemViewHolde
     public void onBindViewHolder(@NonNull SearchItemViewHolder holder, int position) {
         Coin current = items.get(position);
         holder.setTitle(current.name);
-        holder.setDescription(current.description);
+        holder.setDescription(formatText(current.description));
         holder.setImage(current.logo);
     }
 
@@ -66,6 +67,14 @@ public class AwesomeListAdapter extends RecyclerView.Adapter<SearchItemViewHolde
             this.items = new ArrayList<>();
         }
         notifyDataSetChanged();
+    }
+
+    private String formatText(String value) {
+        if (value.length() > maxDescriptionLength) {
+            return String.format("%s...", value.substring(0, maxDescriptionLength));
+        } else {
+            return value;
+        }
     }
 }
 
