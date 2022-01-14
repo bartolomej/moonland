@@ -28,6 +28,11 @@
                 <p style="color:grey;  margin: 5px; ">@item.symbol</p>
             </td>
             <td>
+                <form asp-action="Graph" asp-route-id="@item.symbol" >
+                    <input type="submit" value="Popularity" class="Button"/>
+                </form>   
+            </td>
+            <td>
                 @if (SignInManager.IsSignedIn(User))
                 {
                     @if (@item.isBookmarked)
