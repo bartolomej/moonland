@@ -41,9 +41,10 @@ export class CoinsService {
       query.skip(skip);
     }
 
+    // always limit returned rows to reduce response time
+    limit = limit ? limit : 50;
     if (limit) {
-      // always limit returned rows to reduce response time
-      query.take(limit || 50);
+      query.take(limit);
     }
 
     return query.getMany();
