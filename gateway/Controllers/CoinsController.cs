@@ -86,8 +86,10 @@ namespace gateway.Controllers
             _context.Bookmarks.Remove(coinBookmark);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
 
+
+        }
+        [HttpPost]
         public async Task<IActionResult> Graph(string symbol)
         {
             Console.WriteLine($"http://83.212.82.177:5001/api/social/stats?coin={symbol}&period=MINUTE");
