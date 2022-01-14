@@ -89,7 +89,7 @@ namespace gateway.Controllers
 
 
         }
-        [HttpPost]
+        
         public async Task<IActionResult> Graph(string symbol)
         {
             Console.WriteLine($"http://83.212.82.177:5001/api/social/stats?coin={symbol}&period=MINUTE");
