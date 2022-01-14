@@ -18,7 +18,13 @@ export class CoinsService {
     private readonly coinRepository: Repository<Coin>,
   ) {}
 
-  async findAll({ limit, skip, searchQuery, orderBy, order }: FindAllOptions) {
+  async findAll({
+    limit,
+    skip,
+    searchQuery,
+    orderBy = 'cmcRank',
+    order = 'ASC',
+  }: FindAllOptions) {
     const query = this.coinRepository.createQueryBuilder('coin').select();
 
     if (searchQuery) {
@@ -36,7 +42,8 @@ export class CoinsService {
     }
 
     if (limit) {
-      query.take(limit);
+      // always limit returned rows to reduce response time
+      query.take(limit || 50);
     }
 
     return query.getMany();

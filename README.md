@@ -80,4 +80,11 @@ Data aggregation intervals:
 ## ✌️ Contributors
 
 - Bartolomej Kozorog (63200152)
+  - system design
+  - analytics service development
+  - mobile app development
+  - server maintenance
 - Jan Šuklje (63180292)
+  - gateway service development
+  - mobile app development
+  - hosting server setup
