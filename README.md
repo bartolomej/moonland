@@ -12,9 +12,9 @@ Moonland can return simple social analytics based on data stored in it's interna
 |-----------------------------|-------------------------------|--------------------------------|
 | ![](./images/coin-list.png) | ![](./images/coin-search.png) | ![](./images/coin-details.png) |
 
-| View bookmark list              | Change user settings           | 
-|---------------------------------|--------------------------------|
-| ![](./images/web-bookmarks.png) | ![](./images/web-settings.png) |
+| View bookmark list              | Visualize coin popularity   | 
+|---------------------------------|-----------------------------|
+| ![](./images/web-bookmarks.png) | ![](./images/web-graph.png) |
 
 ## 👋 Get started
 
