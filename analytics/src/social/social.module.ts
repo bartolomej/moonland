@@ -30,5 +30,6 @@ import { StatsController } from './controllers/stats.controller';
     SocialAggregationService,
     SocialUserService,
   ],
+  exports: [SocialPostService, SocialUserService],
 })
 export class SocialModule {}

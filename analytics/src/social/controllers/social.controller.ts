@@ -19,16 +19,16 @@ export class SocialController {
 
   @Get('tweet')
   @ApiQuery({
-    name: 'q',
+    name: 'query',
     description: 'Search query string.',
     example: 'bitcoin',
   })
   @ApiQuery({
-    name: 'l',
+    name: 'limit',
     description: 'Maximum number of results returned from Twitter API',
     example: 2,
   })
-  findAlTweets(@Query('q') query, @Query('l', ParseIntPipe) limit) {
+  findAlTweets(@Query('limit') query, @Query('limit', ParseIntPipe) limit) {
     return this.twitterService.findAll(query, limit);
   }
 

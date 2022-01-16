@@ -2,14 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Coin } from '../entities/coin.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { defaultRowLimit } from '../../config';
+import { AbstractQueryOptions } from '../../types';
 
-type FindAllOptions = {
-  limit?: number;
-  skip?: number;
-  searchQuery?: string;
-  orderBy?: string;
-  order?: 'ASC' | 'DESC';
-};
+type CoinQueryOptions = AbstractQueryOptions;
 
 @Injectable()
 export class CoinsService {
@@ -18,13 +14,28 @@ export class CoinsService {
     private readonly coinRepository: Repository<Coin>,
   ) {}
 
-  async findAll({
+  async getStats() {
+    const [count] = await Promise.all([this.count()]);
+    return {
+      count,
+    };
+  }
+
+  async findAll(options: CoinQueryOptions) {
+    // always limit returned rows to reduce response time
+    if (!options.limit) {
+      options.limit = defaultRowLimit;
+    }
+    return this.query(options).getMany();
+  }
+
+  query({
     limit,
     skip,
     searchQuery,
     orderBy = 'cmcRank',
     order = 'ASC',
-  }: FindAllOptions) {
+  }: CoinQueryOptions) {
     const query = this.coinRepository.createQueryBuilder('coin').select();
 
     if (searchQuery) {
@@ -41,13 +52,11 @@ export class CoinsService {
       query.skip(skip);
     }
 
-    // always limit returned rows to reduce response time
-    limit = limit ? limit : 50;
     if (limit) {
       query.take(limit);
     }
 
-    return query.getMany();
+    return query;
   }
 
   async count() {

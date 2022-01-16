@@ -14,7 +14,10 @@ export class TwitterGatewayService {
   }
 
   async findAll(coin: Coin, limit = 100) {
-    const [lastMention] = await this.postService.findAll(coin.id, 1);
+    const [lastMention] = await this.postService.findAll({
+      coin: coin.id,
+      limit: 1,
+    });
     return this.client.tweets.search({
       q: `#${coin.symbol}`, // search by hashtag
       count: limit,

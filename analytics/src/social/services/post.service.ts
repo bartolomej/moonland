@@ -3,6 +3,8 @@ import { SocialPost } from '../entities/post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { handleTypeormError } from '../../errors';
+import { AbstractQueryOptions } from '../../types';
+import { defaultRowLimit } from '../../config';
 
 export enum GroupByPeriod {
   SECOND = 6,
@@ -27,6 +29,12 @@ type TimeSeriesItem = {
   value: any;
 };
 
+type PostQueryOptions = AbstractQueryOptions & {
+  coin?: string;
+  userId?: string;
+  username?: string;
+};
+
 @Injectable()
 export class SocialPostService {
   constructor(
@@ -38,16 +46,67 @@ export class SocialPostService {
     return this.repository.save(post).catch(handleTypeormError);
   }
 
-  async findAll(coin?: string, limit?: number) {
-    const query = this.repository.createQueryBuilder('p');
+  async getStats() {
+    const [count] = await Promise.all([this.count()]);
+    return {
+      count,
+    };
+  }
+
+  count() {
+    return this.repository.count();
+  }
+
+  findAll(options: PostQueryOptions) {
+    // always limit returned rows to reduce response time
+    if (!options.limit) {
+      options.limit = defaultRowLimit;
+    }
+    return this.query(options).getMany();
+  }
+
+  query({
+    coin,
+    limit,
+    skip,
+    orderBy,
+    order,
+    searchQuery,
+    userId,
+    username,
+  }: PostQueryOptions) {
+    const query = this.repository
+      .createQueryBuilder('post')
+      .innerJoinAndSelect('post.user', 'user');
+
     if (coin) {
-      query.where('p.coin = :coin', { coin });
+      query.where('post.coin = :coin', { coin });
     }
-    query.orderBy('p.createdAt', 'DESC');
+
+    if (searchQuery) {
+      query.andWhere(`post.text RLIKE :regex`, { regex: searchQuery });
+    }
+
+    if (userId) {
+      query.andWhere(`user.id = :userId`, { userId });
+    } else if (username) {
+      query.andWhere(`user.username = :username`, { username });
+    }
+
+    if (orderBy) {
+      query.orderBy(orderBy, order);
+    } else {
+      query.orderBy('post.createdAt', 'DESC');
+    }
+
+    if (skip) {
+      query.skip(skip);
+    }
+
     if (limit) {
-      query.limit(limit);
+      query.take(limit);
     }
-    return query.getMany();
+    return query;
   }
 
   findOne(id: string) {

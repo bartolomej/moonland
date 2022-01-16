@@ -32,7 +32,7 @@ export class StatsController {
     required: false,
   })
   @ApiQuery({
-    name: 'q',
+    name: 'query',
     description: 'Search query. Additional filtration by text content.',
     example: 'To the moon',
     required: false,
@@ -42,7 +42,7 @@ export class StatsController {
     @Query('end') endDate,
     @Query('period') groupByPeriod,
     @Query('coin') coin,
-    @Query('q') searchQuery,
+    @Query('query') searchQuery,
   ) {
     return this.socialPostService.getTimeframeStats({
       startDate,

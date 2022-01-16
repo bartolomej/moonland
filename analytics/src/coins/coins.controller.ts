@@ -19,17 +19,54 @@ export class CoinsController {
 
   @Get()
   @ApiQuery({
-    name: 'l',
-    description: 'Limit the number of returned coins.',
-    example: 10,
+    name: 'query',
+    description: 'Search query.',
+    example: 'To the moon',
+    required: false,
   })
   @ApiQuery({
-    name: 'q',
-    description: 'Filter results by search query.',
-    example: 'crypto',
+    name: 'limit',
+    description: 'Limit total results.',
+    example: 10,
+    required: false,
   })
-  findAll(@Query('l') limit, @Query('q') searchQuery) {
-    return this.coinsService.findAll({ limit, searchQuery });
+  @ApiQuery({
+    name: 'skip',
+    description: 'Skip results.',
+    example: 0,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'order',
+    description: 'Ordering order (ASC, DESC)',
+    example: 'ASC',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'orderBy',
+    description: 'Order by field',
+    example: 10,
+    required: false,
+  })
+  findAll(
+    @Query('query') searchQuery,
+    @Query('limit') limit,
+    @Query('skip') skip,
+    @Query('order') order,
+    @Query('orderBy') orderBy,
+  ) {
+    return this.coinsService.findAll({
+      order,
+      orderBy,
+      skip,
+      limit,
+      searchQuery,
+    });
+  }
+
+  @Get('stats')
+  getStats() {
+    return this.coinsService.getStats();
   }
 
   @Get(':id')
