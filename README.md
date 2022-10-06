@@ -1,5 +1,7 @@
 # MoonLand
 
+> This was developed for a university home assignment and is not meant for production use :)
+
 MoonLand queries social media platforms to provide social sentiment analytics for various crypto coins.
 
 Currently moonland supports only Twitter API as a data source, but can be easily extended to support multiple data sources (Reddit, 4Chan, Facebook,..).
